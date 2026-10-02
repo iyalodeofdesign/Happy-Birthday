@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-// List of Temi's background images
+// List of Temi's background images with staggered floating parameters
 const TEMI_IMAGES = [
   { id: 1, src: "/images/11042739-69FF-4947-A5B2-6C70FC82D2F8_1_105_c.jpeg", alt: "Temi ✨", className: "w-44 h-56 top-[14%] left-[14%] z-10 rotate-[-6deg]", duration: 6.2, delay: 0 },
   { id: 2, src: "/images/2607889E-EC46-4733-8DC9-AA96E3F67094_1_105_c.jpeg", alt: "Temi Photo 2", className: "w-40 h-52 top-[10%] right-[18%] z-10 rotate-[5deg]", duration: 5.4, delay: 0.8 },
@@ -21,25 +21,24 @@ interface TemiIntroScreenProps {
   onWriteWishClick?: () => void;
 }
 
+/**
+ * TemiIntroScreen
+ * Serves as a strict gateway screen. Does NOT auto-bypass.
+ * The user MUST click "Write Wish" to proceed to the main app.
+ */
 export default function TemiIntroScreen({ onWriteWishClick }: TemiIntroScreenProps) {
-  const [hasSeenIntro, setHasSeenIntro] = useState<boolean>(true);
-
-  useEffect(() => {
-    const seen = localStorage.getItem("temi_has_seen_intro");
-    if (!seen) {
-      setHasSeenIntro(false);
-    }
-  }, []);
+  // Strict State Control: showIntro defaults to true so it acts as a click-gated barrier
+  const [showIntro, setShowIntro] = useState<boolean>(true);
 
   const handleWriteWish = () => {
-    localStorage.setItem("temi_has_seen_intro", "true");
-    setHasSeenIntro(true);
+    // Only user click on "Write Wish" will set showIntro to false
+    setShowIntro(false);
     if (onWriteWishClick) {
       onWriteWishClick();
     }
   };
 
-  if (hasSeenIntro) return null;
+  if (!showIntro) return null;
 
   return (
     <AnimatePresence>
@@ -48,7 +47,7 @@ export default function TemiIntroScreen({ onWriteWishClick }: TemiIntroScreenPro
         exit={{ opacity: 0, transition: { duration: 0.5 } }}
         className="fixed inset-0 z-[5000] flex items-center justify-center overflow-hidden"
       >
-        {/* Modern Soft Mesh Gradient Background */}
+        {/* Soft Celebratory Mesh Gradient Background */}
         <div 
           className="absolute inset-0 z-0 bg-[radial-gradient(at_15%_15%,rgba(244,63,94,0.45)_0px,transparent_55%),radial-gradient(at_85%_20%,rgba(245,158,11,0.45)_0px,transparent_55%),radial-gradient(at_20%_85%,rgba(168,85,247,0.45)_0px,transparent_55%),radial-gradient(at_80%_80%,rgba(56,189,248,0.45)_0px,transparent_55%),linear-gradient(135deg,#1e1b4b_0%,#4c1d95_50%,#831843_100%)]"
         />
@@ -89,7 +88,7 @@ export default function TemiIntroScreen({ onWriteWishClick }: TemiIntroScreenPro
           ))}
         </div>
 
-        {/* Central Overlay Popup Modal */}
+        {/* Central Overlay Popup Modal - Strict Gateway */}
         <motion.div
           initial={{ scale: 0.85, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -105,7 +104,7 @@ export default function TemiIntroScreen({ onWriteWishClick }: TemiIntroScreenPro
           </p>
           <button
             onClick={handleWriteWish}
-            className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           >
             Write Wish
           </button>

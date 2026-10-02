@@ -97,17 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     function initIntroScreen() {
         const introScreen = document.getElementById('temi-intro-screen');
-        const hasSeenIntro = localStorage.getItem(STORAGE_KEY_INTRO);
-
         if (!introScreen) return;
 
-        if (hasSeenIntro === 'true') {
-            introScreen.classList.add('fade-out');
-        } else {
-            introScreen.classList.remove('fade-out');
-        }
+        // Strict Click-Gated Gateway: Always show intro screen on landing
+        introScreen.classList.remove('fade-out');
 
-        // 'write wish' button on Intro Popup Modal
+        // 'Write Wish' button click handler on Intro Popup Modal
+        // THIS IS THE ONLY TRIGGER THAT SETS showIntro TO FALSE AND PROCEEDS
         const writeWishIntroBtn = document.getElementById('write-wish-intro-btn');
         if (writeWishIntroBtn) {
             writeWishIntroBtn.addEventListener('click', () => {
