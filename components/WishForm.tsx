@@ -2,6 +2,7 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface WishFormProps {
   onWishSubmitted?: (newWish: { name: string; message: string; imageUrl?: string }) => void;
@@ -9,6 +10,7 @@ interface WishFormProps {
 }
 
 export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: WishFormProps) {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -181,15 +183,16 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
                 onClick={() => {
                   setIsSubmitted(false);
                   if (onNavigateToCarousel) onNavigateToCarousel();
+                  router.push("/wishes");
                 }}
-                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5"
+                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"
               >
                 💌 Read other wishes
               </button>
 
               <button
                 onClick={() => setShowThankYouNote(true)}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold py-3 px-5 rounded-xl border border-slate-700 transition-all"
+                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold py-3 px-5 rounded-xl border border-slate-700 transition-all cursor-pointer"
               >
                 ✨ See Temi's message to you
               </button>
@@ -217,8 +220,9 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
                 onClick={() => {
                   resetForm();
                   if (onNavigateToCarousel) onNavigateToCarousel();
+                  router.push("/wishes");
                 }}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all"
+                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all cursor-pointer"
               >
                 Back to Wishes Carousel 🎠
               </button>
