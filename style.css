@@ -111,13 +111,25 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: 5000;
-    background: #e5dcc3; /* Aged newspaper newsprint color */
-    color: #1a1a1a;
+    background: radial-gradient(at 15% 15%, rgba(244, 63, 94, 0.45) 0px, transparent 55%),
+                radial-gradient(at 85% 20%, rgba(245, 158, 11, 0.45) 0px, transparent 55%),
+                radial-gradient(at 20% 85%, rgba(168, 85, 247, 0.45) 0px, transparent 55%),
+                radial-gradient(at 80% 80%, rgba(56, 189, 248, 0.45) 0px, transparent 55%),
+                linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #831843 100%);
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+[data-theme="light"] .intro-screen {
+    background: radial-gradient(at 15% 15%, rgba(251, 113, 133, 0.4) 0px, transparent 55%),
+                radial-gradient(at 85% 20%, rgba(251, 146, 60, 0.4) 0px, transparent 55%),
+                radial-gradient(at 20% 85%, rgba(192, 132, 252, 0.4) 0px, transparent 55%),
+                radial-gradient(at 80% 80%, rgba(56, 189, 248, 0.45) 0px, transparent 55%),
+                linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 50%, #ffe4e6 100%);
 }
 
 .intro-screen.fade-out {
@@ -126,123 +138,15 @@ body {
     pointer-events: none;
 }
 
-/* Newspaper Collage Container */
-.newspaper-collage-container {
+/* Mesh Gallery Container */
+.mesh-gallery-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        radial-gradient(circle at 50% 50%, rgba(245, 237, 218, 0.3) 0%, rgba(180, 165, 135, 0.7) 100%),
-        repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 4px);
     overflow: hidden;
-    filter: sepia(0.18) contrast(1.05);
-}
-
-/* Newspaper Text Snippet Fragments */
-.news-fragment {
-    position: absolute;
-    font-family: var(--font-serif);
-    color: #2b2b2b;
     pointer-events: none;
-    user-select: none;
-}
-
-.header-fragment {
-    top: 3%;
-    left: 5%;
-    width: 90%;
-    border-bottom: 3px double #1a1a1a;
-    padding-bottom: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    font-weight: 800;
-}
-
-.news-paper-name {
-    font-size: clamp(1.2rem, 3vw, 2.2rem);
-    letter-spacing: 0.15em;
-}
-
-.news-issue-date {
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    align-self: flex-end;
-}
-
-.headline-fragment-1 {
-    top: 12%;
-    left: 6%;
-    max-width: 320px;
-}
-
-.headline-fragment-1 h2 {
-    font-size: 1.8rem;
-    font-weight: 900;
-    line-height: 1.1;
-    border-bottom: 1px solid #333;
-    margin-bottom: 0.3rem;
-}
-
-.headline-fragment-1 p {
-    font-size: 0.82rem;
-    line-height: 1.35;
-    font-family: Georgia, serif;
-    color: #444;
-}
-
-.headline-fragment-2 {
-    bottom: 10%;
-    right: 8%;
-    max-width: 300px;
-    text-align: right;
-}
-
-.headline-fragment-2 h2 {
-    font-size: 1.7rem;
-    font-weight: 900;
-    line-height: 1.1;
-}
-
-.headline-fragment-2 p {
-    font-size: 0.8rem;
-    font-family: Georgia, serif;
-}
-
-.headline-fragment-3 {
-    top: 50%;
-    left: 4%;
-    transform: rotate(-90deg) translateY(-50%);
-    transform-origin: left center;
-    font-size: 2.5rem;
-    opacity: 0.15;
-    letter-spacing: 0.2em;
-}
-
-.highlight-badge-1 {
-    top: 18%;
-    right: 12%;
-    background: #ea580c;
-    color: #ffffff;
-    font-family: var(--font-heading);
-    font-weight: 900;
-    font-size: 1.1rem;
-    padding: 0.4rem 1rem;
-    transform: rotate(6deg);
-    box-shadow: 3px 3px 0 #1a1a1a;
-}
-
-.highlight-badge-2 {
-    bottom: 18%;
-    left: 10%;
-    background: #1a1a1a;
-    color: #fef08a;
-    font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: 0.95rem;
-    padding: 0.3rem 0.8rem;
-    transform: rotate(-4deg);
 }
 
 /* Overlapping Photos Collage Items */
@@ -250,8 +154,8 @@ body {
     position: absolute;
     background: #ffffff;
     padding: 8px 8px 24px 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.2);
-    border-radius: 2px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), 0 3px 10px rgba(0,0,0,0.2);
+    border-radius: 4px;
     transition: transform 0.3s ease;
 }
 
@@ -260,7 +164,7 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: contrast(1.03) saturate(1.05);
+    border-radius: 2px;
 }
 
 .photo-caption {
@@ -269,9 +173,9 @@ body {
     left: 0;
     right: 0;
     text-align: center;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #333;
 }
 
@@ -280,7 +184,7 @@ body {
     position: absolute;
     width: 70px;
     height: 22px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(2px);
     border: 1px solid rgba(200, 200, 200, 0.5);
     z-index: 10;
@@ -292,15 +196,36 @@ body {
 .tape-strip.center-top { top: -12px; left: 35%; transform: rotate(-3deg); }
 
 /* Position variations for 9 images of Temi */
-.photo-1 { width: 180px; height: 220px; top: 14%; left: 14%; transform: rotate(-6deg); z-index: 2; }
-.photo-2 { width: 170px; height: 210px; top: 10%; right: 18%; transform: rotate(5deg); z-index: 3; }
-.photo-3 { width: 210px; height: 260px; top: 38%; left: 8%; transform: rotate(-3deg); z-index: 4; }
-.photo-4 { width: 220px; height: 270px; top: 35%; right: 9%; transform: rotate(7deg); z-index: 5; }
-.photo-5 { width: 190px; height: 230px; bottom: 12%; left: 22%; transform: rotate(4deg); z-index: 3; }
-.photo-6 { width: 180px; height: 220px; bottom: 8%; right: 24%; transform: rotate(-7deg); z-index: 2; }
-.photo-7 { width: 150px; height: 180px; top: 8%; left: 42%; transform: rotate(2deg); z-index: 1; opacity: 0.85; }
-.photo-8 { width: 160px; height: 190px; bottom: 6%; left: 43%; transform: rotate(-4deg); z-index: 1; opacity: 0.85; }
-.photo-9 { width: 140px; height: 170px; top: 48%; right: 3%; transform: rotate(-8deg); z-index: 1; opacity: 0.8; }
+.photo-1 { width: 180px; height: 220px; top: 14%; left: 14%; z-index: 2; }
+.photo-2 { width: 170px; height: 210px; top: 10%; right: 18%; z-index: 3; }
+.photo-3 { width: 210px; height: 260px; top: 38%; left: 8%; z-index: 4; }
+.photo-4 { width: 220px; height: 270px; top: 35%; right: 9%; z-index: 5; }
+.photo-5 { width: 190px; height: 230px; bottom: 12%; left: 22%; z-index: 3; }
+.photo-6 { width: 180px; height: 220px; bottom: 8%; right: 24%; z-index: 2; }
+.photo-7 { width: 150px; height: 180px; top: 8%; left: 42%; z-index: 1; opacity: 0.9; }
+.photo-8 { width: 160px; height: 190px; bottom: 6%; left: 43%; z-index: 1; opacity: 0.9; }
+.photo-9 { width: 140px; height: 170px; top: 48%; right: 3%; z-index: 1; opacity: 0.85; }
+
+/* Organic Floating Animations for Background Images */
+@keyframes floatY1 { 0%, 100% { transform: rotate(-6deg) translateY(0px); } 50% { transform: rotate(-6deg) translateY(-22px); } }
+@keyframes floatY2 { 0%, 100% { transform: rotate(5deg) translateY(0px); } 50% { transform: rotate(5deg) translateY(18px); } }
+@keyframes floatY3 { 0%, 100% { transform: rotate(-3deg) translateY(0px); } 50% { transform: rotate(-3deg) translateY(-25px); } }
+@keyframes floatY4 { 0%, 100% { transform: rotate(7deg) translateY(0px); } 50% { transform: rotate(7deg) translateY(20px); } }
+@keyframes floatY5 { 0%, 100% { transform: rotate(4deg) translateY(0px); } 50% { transform: rotate(4deg) translateY(-18px); } }
+@keyframes floatY6 { 0%, 100% { transform: rotate(-7deg) translateY(0px); } 50% { transform: rotate(-7deg) translateY(24px); } }
+@keyframes floatY7 { 0%, 100% { transform: rotate(2deg) translateY(0px); } 50% { transform: rotate(2deg) translateY(-16px); } }
+@keyframes floatY8 { 0%, 100% { transform: rotate(-4deg) translateY(0px); } 50% { transform: rotate(-4deg) translateY(22px); } }
+@keyframes floatY9 { 0%, 100% { transform: rotate(-8deg) translateY(0px); } 50% { transform: rotate(-8deg) translateY(-20px); } }
+
+.float-anim-1 { animation: floatY1 6.2s ease-in-out infinite alternate; animation-delay: -0.5s; }
+.float-anim-2 { animation: floatY2 5.4s ease-in-out infinite alternate; animation-delay: -1.8s; }
+.float-anim-3 { animation: floatY3 7.5s ease-in-out infinite alternate; animation-delay: -3.1s; }
+.float-anim-4 { animation: floatY4 4.8s ease-in-out infinite alternate; animation-delay: -0.9s; }
+.float-anim-5 { animation: floatY5 8.0s ease-in-out infinite alternate; animation-delay: -2.4s; }
+.float-anim-6 { animation: floatY6 6.6s ease-in-out infinite alternate; animation-delay: -1.2s; }
+.float-anim-7 { animation: floatY7 5.8s ease-in-out infinite alternate; animation-delay: -4.0s; }
+.float-anim-8 { animation: floatY8 7.1s ease-in-out infinite alternate; animation-delay: -2.0s; }
+.float-anim-9 { animation: floatY9 6.0s ease-in-out infinite alternate; animation-delay: -1.5s; }
 
 /* OVERLAY POPUP MODAL */
 .intro-popup-modal {
