@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import WishGrid from "@/components/WishGrid";
+import GallerySection from "@/components/GallerySection";
 
 export default function WishesPage() {
   return (
@@ -29,6 +30,7 @@ export default function WishesPage() {
       {/* Guestbook Section */}
       <div className="py-4">
         <WishGrid />
+        <GallerySection />
       </div>
     </main>
   );

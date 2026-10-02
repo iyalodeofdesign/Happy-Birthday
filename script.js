@@ -202,24 +202,49 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderWishes() {
         const track = document.getElementById('carousel-track');
         const dotsContainer = document.getElementById('carousel-dots');
-        if (!track) return;
+        const galleryGrid = document.getElementById('user-gallery-grid');
 
-        track.innerHTML = '';
-        if (dotsContainer) dotsContainer.innerHTML = '';
+        if (track) {
+            track.innerHTML = '';
+            if (dotsContainer) dotsContainer.innerHTML = '';
 
-        wishes.forEach((wish, index) => {
-            const card = createWishCard(wish);
-            track.appendChild(card);
+            wishes.forEach((wish, index) => {
+                const card = createWishCard(wish);
+                track.appendChild(card);
 
-            if (dotsContainer && !isGridView) {
-                const dot = document.createElement('div');
-                dot.className = `dot ${index === currentSlideIndex ? 'active' : ''}`;
-                dot.addEventListener('click', () => goToSlide(index));
-                dotsContainer.appendChild(dot);
-            }
-        });
+                if (dotsContainer && !isGridView) {
+                    const dot = document.createElement('div');
+                    dot.className = `dot ${index === currentSlideIndex ? 'active' : ''}`;
+                    dot.addEventListener('click', () => goToSlide(index));
+                    dotsContainer.appendChild(dot);
+                }
+            });
 
-        updateCarouselPosition();
+            updateCarouselPosition();
+        }
+
+        // Render Dynamic Gallery Grid of User-Uploaded Photos
+        if (galleryGrid) {
+            galleryGrid.innerHTML = '';
+            const photoWishes = wishes.filter(w => w.photoUrl);
+
+            photoWishes.forEach(wish => {
+                const card = document.createElement('div');
+                card.className = 'gallery-card relative overflow-hidden rounded-2xl group shadow-md';
+                card.style.position = 'relative';
+                card.style.borderRadius = '1rem';
+                card.style.overflow = 'hidden';
+                card.style.aspectRatio = '1 / 1';
+
+                card.innerHTML = `
+                    <img src="${escapeHTML(wish.photoUrl)}" alt="Photo memory with Temi" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                    <div style="position: absolute; bottom: 12px; left: 12px; z-index: 10; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); color: #ffffff; font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.3); pointer-events: none;">
+                        ${escapeHTML(wish.sender)} and Temi
+                    </div>
+                `;
+                galleryGrid.appendChild(card);
+            });
+        }
     }
 
     function createWishCard(wish) {
