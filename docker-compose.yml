@@ -1,0 +1,10 @@
+services:
+  app:
+    build: .
+    image: happy-birthday:latest
+    container_name: happy-birthday
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
