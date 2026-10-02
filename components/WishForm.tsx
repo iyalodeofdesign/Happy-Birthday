@@ -35,7 +35,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
   };
 
   // Form Submission
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
 
@@ -47,6 +47,16 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
 
     if (onWishSubmitted) {
       onWishSubmitted(wishData);
+    }
+
+    try {
+      await fetch("/api/wish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(wishData),
+      });
+    } catch (err) {
+      console.error("Failed to send wish to API route:", err);
     }
 
     setIsSubmitted(true);
@@ -183,22 +193,18 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 pt-2">
-              <Link
-                href="/wishes"
-                onClick={() => {
-                  setIsSubmitted(false);
-                  if (onNavigateToCarousel) onNavigateToCarousel();
-                }}
-                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer block text-center"
-              >
-                💌 Read other wishes
-              </Link>
-
               <button
                 onClick={() => setShowThankYouNote(true)}
-                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold py-3 px-5 rounded-xl border border-slate-700 transition-all cursor-pointer"
+                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"
               >
                 ✨ See Temi's message to you
+              </button>
+
+              <button
+                onClick={resetForm}
+                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold py-3 px-5 rounded-xl border border-slate-700 transition-all cursor-pointer"
+              >
+                Send Another Wish ❤️
               </button>
             </div>
           </div>
@@ -220,16 +226,12 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
             </div>
 
             <div className="flex flex-col gap-3">
-              <Link
-                href="/wishes"
-                onClick={() => {
-                  resetForm();
-                  if (onNavigateToCarousel) onNavigateToCarousel();
-                }}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all cursor-pointer block text-center"
+              <button
+                onClick={resetForm}
+                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all cursor-pointer"
               >
-                Back to Wishes Carousel 🎠
-              </Link>
+                Close &amp; Write Another Wish ✨
+              </button>
             </div>
           </div>
         </div>

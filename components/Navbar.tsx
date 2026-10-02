@@ -22,28 +22,13 @@ export default function Navbar() {
           <span>Celebrating Temi</span>
         </Link>
 
-        {/* Center Navigation Menu with Dynamic Pink Underline Active State */}
+        {/* Center Navigation Menu */}
         <nav className="flex items-center gap-6 sm:gap-8">
           <Link
             href="/"
-            className={`py-1 text-sm font-semibold transition-all relative ${
-              isWriteWishActive
-                ? "text-white font-bold border-b-2 border-pink-500"
-                : "text-slate-400 hover:text-slate-200"
-            }`}
+            className="py-1 text-sm font-bold transition-all relative text-white border-b-2 border-pink-500"
           >
             Write a Wish
-          </Link>
-
-          <Link
-            href="/wishes"
-            className={`py-1 text-sm font-semibold transition-all relative ${
-              isWishesActive
-                ? "text-white font-bold border-b-2 border-pink-500"
-                : "text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            Temi's Wishes
           </Link>
         </nav>
 
