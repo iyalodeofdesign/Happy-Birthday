@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface WishItem {
   id: string;
@@ -65,7 +66,7 @@ interface WishGridProps {
 }
 
 export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
-  // CRITICAL: React State for Hover Logic
+  // 2. STATE-DRIVEN HOVER LOGIC (CRITICAL)
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [wishList, setWishList] = useState<WishItem[]>(wishes);
 
@@ -99,27 +100,49 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
         </div>
       </div>
 
-      {/* Masonry Layout Container */}
-      <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 max-w-7xl mx-auto p-4">
+      {/* 1. STRUCTURAL LOGIC (True Masonry CSS Columns) */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 },
+          },
+        }}
+        className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 max-w-7xl mx-auto p-4"
+      >
         {wishList.map((item) => {
+          // Hover State Evaluation
           const isHovered = hoveredId === item.id;
           const isAnotherHovered = hoveredId !== null && !isHovered;
 
           return (
-            <div
+            <motion.div
               key={item.id}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+              }}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
               className="break-inside-avoid relative"
             >
-              {/* THE "LIGHT RAY" GLOW EFFECT (Light Theme) */}
-              <div
-                className={`absolute -inset-4 bg-gradient-to-r from-pink-300 via-orange-300 to-sky-300 blur-[40px] transition-opacity duration-500 rounded-3xl z-0 pointer-events-none ${
-                  isHovered ? "opacity-60" : "opacity-0"
-                }`}
-              />
+              {/* 3. THE "LIGHT RAY" GLOW EFFECT (Light Theme Background Div Behind Card z-[-1]) */}
+              <AnimatePresence>
+                {isHovered && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 0.6, scale: 1.05 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="absolute -inset-4 bg-gradient-to-r from-pink-300 via-orange-300 to-sky-300 blur-[40px] opacity-60 transition-opacity duration-500 rounded-3xl z-[-1] pointer-events-none"
+                  />
+                )}
+              </AnimatePresence>
 
-              {/* CARD CONTAINER (relative z-10 with solid white background) */}
+              {/* CARD CONTAINER (relative z-10 with solid white background for sharp text) */}
               <div
                 className={`relative z-10 bg-white border rounded-2xl p-6 sm:p-7 transition-all duration-500 ease-out ${
                   isHovered
@@ -217,10 +240,10 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }
