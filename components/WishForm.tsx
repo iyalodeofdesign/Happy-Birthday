@@ -2,6 +2,7 @@
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 interface WishFormProps {
@@ -182,16 +183,16 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 pt-2">
-              <button
+              <Link
+                href="/wishes"
                 onClick={() => {
                   setIsSubmitted(false);
                   if (onNavigateToCarousel) onNavigateToCarousel();
-                  router.push("/wishes");
                 }}
-                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer block text-center"
               >
                 💌 Read other wishes
-              </button>
+              </Link>
 
               <button
                 onClick={() => setShowThankYouNote(true)}
@@ -219,16 +220,16 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
             </div>
 
             <div className="flex flex-col gap-3">
-              <button
+              <Link
+                href="/wishes"
                 onClick={() => {
                   resetForm();
                   if (onNavigateToCarousel) onNavigateToCarousel();
-                  router.push("/wishes");
                 }}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all cursor-pointer"
+                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all cursor-pointer block text-center"
               >
                 Back to Wishes Carousel 🎠
-              </button>
+              </Link>
             </div>
           </div>
         </div>
