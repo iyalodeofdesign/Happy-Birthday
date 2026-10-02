@@ -834,28 +834,54 @@ button, a.primary-btn, a.secondary-btn {
     transform: none !important;
 }
 
-/* Wish Card Style */
+/* Light Theme Masonry Wish Card with Illuminated Light Ray Hover */
 .wish-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: var(--radius-lg);
-    padding: 2rem;
-    min-width: 320px;
+    padding: 1.75rem;
+    min-width: 300px;
     max-width: 380px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--transition-bounce), box-shadow var(--transition-normal), border-color var(--transition-normal);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    opacity: 0.3;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.3s ease;
     position: relative;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    color: #0f172a;
 }
 
-.grid-mode .wish-card {
-    min-width: 0;
-    max-width: none;
+.wish-card::before {
+    content: "";
+    position: absolute;
+    top: -12px; left: -12px; right: -12px; bottom: -12px;
+    border-radius: var(--radius-lg);
+    background: radial-gradient(circle at center, rgba(236, 72, 153, 0.4) 0%, rgba(14, 165, 233, 0.35) 50%, rgba(249, 115, 22, 0.25) 100%);
+    filter: blur(40px);
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: scale(0.85);
+}
+
+.wish-card:hover {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(236, 72, 153, 0.4);
+    box-shadow: 0 25px 45px -15px rgba(0, 0, 0, 0.12);
+}
+
+.wish-card:hover::before {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.carousel-track:hover .wish-card:not(:hover),
+.carousel-track.grid-mode:hover .wish-card:not(:hover) {
+    opacity: 0.18;
 }
 
 .wish-card:hover {
