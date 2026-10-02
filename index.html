@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Temi! 🎉 | Birthday Guestbook</title>
+    <meta name="description" content="A digital birthday guestbook dedicated to celebrating Temi. Leave a birthday wish and share the love!">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Canvas for Confetti -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-brand">
+                <span class="brand-emoji">🎂</span>
+                <span class="brand-text">Celebrating Temi</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#hero" class="nav-link active">Home</a>
+                <a href="#write-wish" class="nav-link">Write a Wish</a>
+                <a href="#wishes-section" class="nav-link">Temi's Wishes</a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle dark/light theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <a href="#write-wish" class="primary-btn btn-sm">
+                    <span>❤️ Wish Temi</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-glow-1"></div>
+            <div class="hero-glow-2"></div>
+            <div class="sparkles-container" aria-hidden="true"></div>
+
+            <div class="hero-content">
+                <div class="event-badge">
+                    <span class="badge-dot"></span>
+                    <span>IT'S TEMI'S SPECIAL DAY 🎉</span>
+                </div>
+
+                <h1 class="hero-headline">
+                    It's Temi's Birthday! 🎂
+                </h1>
+
+                <p class="hero-subtext">
+                    Leave a little love, a big wish, or a message Temi can come back to whenever they need a reminder of how loved they are.
+                </p>
+
+                <div class="hero-cta-group">
+                    <a href="#write-wish" class="primary-btn btn-lg glow-effect" id="cta-write-wish">
+                        <span>✍️ Write a Birthday Wish</span>
+                    </a>
+                    <a href="#wishes-section" class="secondary-btn btn-lg" id="cta-read-wishes">
+                        <span>💌 Read Other Wishes</span>
+                    </a>
+                </div>
+
+                <div class="hero-live-counter">
+                    <span class="heart-pulse">❤️</span>
+                    <span id="hero-counter-text">Join people sending love to Temi today</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Write a Wish Section -->
+        <section id="write-wish" class="section-padding form-section">
+            <div class="section-header text-center">
+                <span class="section-tag">LEAVE A MESSAGE</span>
+                <h2 class="section-title">What do you want Temi to know today? 💬</h2>
+                <p class="section-subtitle">Your message will be added directly to Temi's personal birthday carousel.</p>
+            </div>
+
+            <div class="form-container">
+                <!-- Wish Form -->
+                <form id="wish-form" class="wish-form-card">
+                    <div class="form-group">
+                        <label for="sender-name">Your Name <span class="required-star">*</span></label>
+                        <input type="text" id="sender-name" placeholder="e.g. Sarah, Uncle Dave, Alex from Work" required maxlength="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sender-message">Your Birthday Wish for Temi <span class="required-star">*</span></label>
+                        <textarea id="sender-message" rows="5" placeholder="Write something heartfelt, funny, or encouraging for Temi..." required maxlength="1000"></textarea>
+                        <div class="character-count"><span id="char-count">0</span> / 1000</div>
+                    </div>
+
+                    <button type="submit" id="submit-wish-btn" class="primary-btn btn-full">
+                        <span>Send My Wish ❤️</span>
+                    </button>
+                </form>
+
+                <!-- Success Confirmation State (Hidden by default) -->
+                <div id="wish-success-card" class="success-card hidden">
+                    <div class="success-icon-wrap">
+                        <span class="success-emoji">🎉</span>
+                    </div>
+                    <h3 class="success-title">Your wish has been added!</h3>
+                    <p class="success-message">Temi now has one more reason to smile today. Thank you for sharing the love!</p>
+                    
+                    <div class="success-actions">
+                        <a href="#wishes-section" class="primary-btn" id="success-read-wishes-btn">
+                            <span>💌 Read Other Wishes for Temi</span>
+                        </a>
+                        <button type="button" class="secondary-btn" id="write-another-btn">
+                            <span>✍️ Write Another Message</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wishes Carousel Section -->
+        <section id="wishes-section" class="section-padding wishes-section">
+            <div class="section-header">
+                <div class="header-left">
+                    <span class="section-tag">GUESTBOOK</span>
+                    <h2 class="section-title">Messages for Temi 💌</h2>
+                    <p class="section-subtitle">Messages from people who are celebrating you today.</p>
+                </div>
+                <div class="header-right">
+                    <div class="wishes-counter-pill" id="wishes-counter-pill">
+                        <span class="pill-heart">❤️</span>
+                        <span id="counter-count">0</span> wishes for Temi
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel Controls & Cards -->
+            <div class="carousel-wrapper">
+                <button class="carousel-nav prev-btn" id="carousel-prev" aria-label="Previous wish">
+                    <span>❮</span>
+                </button>
+
+                <div class="carousel-track-container" id="carousel-container">
+                    <div class="carousel-track" id="carousel-track">
+                        <!-- Cards injected via JavaScript -->
+                    </div>
+                </div>
+
+                <button class="carousel-nav next-btn" id="carousel-next" aria-label="Next wish">
+                    <span>❯</span>
+                </button>
+            </div>
+
+            <!-- Carousel Pagination Dots -->
+            <div class="carousel-pagination" id="carousel-dots">
+                <!-- Dots injected via JavaScript -->
+            </div>
+
+            <!-- Toggle for Grid View -->
+            <div class="view-toggle-wrap text-center">
+                <button id="toggle-view-btn" class="secondary-btn btn-sm">
+                    <span id="toggle-view-text">📱 Switch to Grid View</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Emotional Closing Section -->
+        <section class="closing-section">
+            <div class="closing-card">
+                <div class="closing-sparkle">✨</div>
+                <h2 class="closing-title">One birthday. So many people rooting for you.</h2>
+                <p class="closing-sub">Happy Birthday, Temi! May this new year bring you limitless joy, peace, and endless reasons to celebrate.</p>
+                
+                <div class="closing-cta-wrap">
+                    <button id="celebrate-temi-btn" class="celebrate-btn glow-gold">
+                        <span>🎉 Shower Temi with Confetti!</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Made with ❤️ specifically for <strong>Temi</strong>'s Birthday • All messages preserved with love</p>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
