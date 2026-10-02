@@ -329,14 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Celebrate Confetti Button
-        const celebrateBtn = document.getElementById('celebrate-temi-btn');
-        if (celebrateBtn) {
-            celebrateBtn.addEventListener('click', () => {
-                triggerConfetti();
-                showToast('Confetti shower for Temi! 🎉🎂');
-            });
-        }
 
         // Temi Message Modal Handlers
         const seeTemisMessageBtn = document.getElementById('see-temis-message-btn');
