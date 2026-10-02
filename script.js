@@ -1,5 +1,6 @@
 /**
  * Temi's Birthday Guestbook - Interactive Application Script
+ * Features Pre-Landing Intro Screen (TemiIntroScreen) with Newspaper Collage & Modal
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const STORAGE_KEY_WISHES = 'temi_birthday_wishes_v2';
     const STORAGE_KEY_THEME = 'temi_theme_v1';
+    const STORAGE_KEY_INTRO = 'temi_has_seen_intro';
 
     // Heartfelt Initial Wishes Dedicated to Temi
     const SAMPLE_WISHES = [
@@ -67,14 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Touch Swiping State
     let startX = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
     let isDragging = false;
 
     // ==========================================
     // Initialization
     // ==========================================
     function init() {
+        initIntroScreen();
         loadWishes();
         loadTheme();
         setupEventListeners();
@@ -92,7 +93,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // Data Storage
+    // Pre-Landing Intro Screen (TemiIntroScreen)
+    // ==========================================
+    function initIntroScreen() {
+        const introScreen = document.getElementById('temi-intro-screen');
+        const hasSeenIntro = localStorage.getItem(STORAGE_KEY_INTRO);
+
+        if (!introScreen) return;
+
+        if (hasSeenIntro === 'true') {
+            introScreen.classList.add('fade-out');
+        } else {
+            introScreen.classList.remove('fade-out');
+        }
+
+        // 'write wish' button on Intro Popup Modal
+        const writeWishIntroBtn = document.getElementById('write-wish-intro-btn');
+        if (writeWishIntroBtn) {
+            writeWishIntroBtn.addEventListener('click', () => {
+                dismissIntroScreen();
+            });
+        }
+
+        // Replay Intro Button in Navbar
+        const replayBtn = document.getElementById('replay-intro-btn');
+        if (replayBtn) {
+            replayBtn.addEventListener('click', () => {
+                showIntroScreen();
+            });
+        }
+    }
+
+    function dismissIntroScreen() {
+        const introScreen = document.getElementById('temi-intro-screen');
+        if (introScreen) {
+            introScreen.classList.add('fade-out');
+        }
+        localStorage.setItem(STORAGE_KEY_INTRO, 'true');
+
+        // Smooth scroll to wish form
+        setTimeout(() => {
+            const wishFormSection = document.getElementById('write-wish');
+            if (wishFormSection) {
+                wishFormSection.scrollIntoView({ behavior: 'smooth' });
+                const nameInput = document.getElementById('sender-name');
+                if (nameInput) nameInput.focus();
+            }
+            triggerConfetti();
+        }, 300);
+    }
+
+    function showIntroScreen() {
+        const introScreen = document.getElementById('temi-intro-screen');
+        if (introScreen) {
+            introScreen.classList.remove('fade-out');
+        }
+    }
+
+    // ==========================================
+    // Data Storage & Theme
     // ==========================================
     function loadWishes() {
         const stored = localStorage.getItem(STORAGE_KEY_WISHES);
@@ -158,11 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dotsContainer) dotsContainer.innerHTML = '';
 
         wishes.forEach((wish, index) => {
-            // Create Wish Card
             const card = createWishCard(wish);
             track.appendChild(card);
 
-            // Create Dot if in Carousel View
             if (dotsContainer && !isGridView) {
                 const dot = document.createElement('div');
                 dot.className = `dot ${index === currentSlideIndex ? 'active' : ''}`;
@@ -203,7 +260,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return card;
     }
 
-    // Carousel Navigation
     function goToSlide(index) {
         if (isGridView) return;
 
@@ -227,7 +283,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Calculate offset per card width + gap
         const cardWidth = 320;
         const gap = 24;
         const offset = -(currentSlideIndex * (cardWidth + gap));
@@ -253,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Form Submit
         const form = document.getElementById('wish-form');
-        form.addEventListener('submit', handleWishSubmit);
+        if (form) form.addEventListener('submit', handleWishSubmit);
 
         // Carousel Controls
         const prevBtn = document.getElementById('carousel-prev');
@@ -322,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Touch & Swipe Support for Carousel
         setupTouchSwiping();
     }
 
@@ -346,24 +400,19 @@ document.addEventListener('DOMContentLoaded', () => {
             timestamp: Date.now()
         };
 
-        // Add to top of list
         wishes.unshift(newWish);
         saveWishes();
         renderWishes();
 
-        // Trigger celebration
         triggerConfetti();
 
-        // Switch to Confirmation Card
         document.getElementById('wish-form').classList.add('hidden');
         document.getElementById('wish-success-card').classList.remove('hidden');
 
         showToast('Your birthday wish for Temi has been posted! 🎉');
     }
 
-    // ==========================================
     // Touch Swiping Logic
-    // ==========================================
     function setupTouchSwiping() {
         const container = document.getElementById('carousel-container');
         if (!container) return;
@@ -394,9 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
-    // UI Helpers & Pure Vanilla Canvas Confetti
-    // ==========================================
+    // UI Helpers & Confetti
     function showToast(message) {
         const container = document.getElementById('toast-container');
         if (!container) return;
@@ -455,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
             particles.forEach((p) => {
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.32; // gravity
+                p.vy += 0.32;
                 p.rotation += p.rSpeed;
                 p.opacity -= 0.014;
 

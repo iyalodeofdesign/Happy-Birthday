@@ -8,12 +8,106 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,600&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Canvas for Confetti -->
     <canvas id="confetti-canvas"></canvas>
+
+    <!-- PRE-LANDING INTRO SCREEN (TemiIntroScreen) -->
+    <div id="temi-intro-screen" class="intro-screen">
+        <!-- Newspaper Collage Background -->
+        <div class="newspaper-collage-container">
+            <!-- Newspaper Background Text & Clipping Fragments -->
+            <div class="news-fragment header-fragment">
+                <span class="news-paper-name">THE TEMI DAILY CHRONICLE</span>
+                <span class="news-issue-date">SPECIAL BIRTHDAY EDITION • VOL. 1</span>
+            </div>
+
+            <div class="news-fragment headline-fragment-1">
+                <h2>THE JOB BEFORE US</h2>
+                <p>Celebrating extraordinary moments, unforgettable smiles, and a journey filled with grace and ambition.</p>
+            </div>
+
+            <div class="news-fragment headline-fragment-2">
+                <h2>GOLD MINE OF JOY</h2>
+                <p>Friends and family unite across the world to honor Temi's special day.</p>
+            </div>
+
+            <div class="news-fragment highlight-badge-1">
+                <span>SURPRISE!</span>
+            </div>
+
+            <div class="news-fragment highlight-badge-2">
+                <span>VENDING LOVE</span>
+            </div>
+
+            <div class="news-fragment headline-fragment-3">
+                <h2>A TIME TO CELEBRATE</h2>
+            </div>
+
+            <!-- Dynamic Image Collage of Temi -->
+            <div class="collage-item photo-1">
+                <div class="tape-strip top-left"></div>
+                <img src="./Images/11042739-69FF-4947-A5B2-6C70FC82D2F8_1_105_c.jpeg" alt="Temi photo 1" loading="eager">
+                <span class="photo-caption">Temi ✨</span>
+            </div>
+
+            <div class="collage-item photo-2">
+                <div class="tape-strip top-right"></div>
+                <img src="./Images/2607889E-EC46-4733-8DC9-AA96E3F67094_1_105_c.jpeg" alt="Temi photo 2" loading="eager">
+            </div>
+
+            <div class="collage-item photo-3">
+                <div class="tape-strip center-top"></div>
+                <img src="./Images/42DCFB78-FE64-4617-993C-F853BD135B6B_1_105_c.jpeg" alt="Temi photo 3" loading="eager">
+            </div>
+
+            <div class="collage-item photo-4">
+                <div class="tape-strip top-right"></div>
+                <img src="./Images/53138422-E9C8-4C8D-89D6-ED45B26769D6_1_105_c.jpeg" alt="Temi photo 4" loading="eager">
+            </div>
+
+            <div class="collage-item photo-5">
+                <div class="tape-strip top-left"></div>
+                <img src="./Images/80FA9039-13D5-4E5E-BDBE-85D4D41C9A49_1_105_c.jpeg" alt="Temi photo 5" loading="eager">
+                <span class="photo-caption">Joyful Moments ❤️</span>
+            </div>
+
+            <div class="collage-item photo-6">
+                <div class="tape-strip center-top"></div>
+                <img src="./Images/A59B210F-EF6D-4FC6-8FE8-049ED450C022_1_105_c.jpeg" alt="Temi photo 6" loading="eager">
+            </div>
+
+            <div class="collage-item photo-7">
+                <div class="tape-strip top-right"></div>
+                <img src="./Images/B89C2BC9-D924-4EC5-880F-786FDCDED6C1_1_201_a.jpeg" alt="Temi photo 7" loading="eager">
+            </div>
+
+            <div class="collage-item photo-8">
+                <div class="tape-strip top-left"></div>
+                <img src="./Images/C278CF6D-51CB-40EC-8FCF-E539A29FC482_1_105_c.jpeg" alt="Temi photo 8" loading="eager">
+            </div>
+
+            <div class="collage-item photo-9">
+                <div class="tape-strip center-top"></div>
+                <img src="./Images/D901E02F-3D45-4CB4-8788-B054D1A24CB7_1_105_c.jpeg" alt="Temi photo 9" loading="eager">
+            </div>
+        </div>
+
+        <!-- Overlay Popup (Interactive Modal) -->
+        <div id="temi-intro-modal" class="intro-popup-modal">
+            <div class="popup-content">
+                <div class="popup-header-icon">🎂</div>
+                <h1 class="popup-title">You are here because of Temi</h1>
+                <p class="popup-subtext">why don't you write her a wish to mark the beginning of the rest of her day</p>
+                <button id="write-wish-intro-btn" class="primary-btn btn-lg popup-cta-btn">
+                    <span>write wish</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation Header -->
     <header class="navbar">
@@ -27,9 +121,13 @@
                 <a href="#hero" class="nav-link active">Home</a>
                 <a href="#write-wish" class="nav-link">Write a Wish</a>
                 <a href="#wishes-section" class="nav-link">Temi's Wishes</a>
+                <a href="#photo-gallery" class="nav-link">Gallery</a>
             </nav>
 
             <div class="nav-actions">
+                <button id="replay-intro-btn" class="secondary-btn btn-sm" title="View Intro Collage">
+                    <span>📰 Intro</span>
+                </button>
                 <button id="theme-toggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle dark/light theme">
                     <span class="theme-icon">🌙</span>
                 </button>
@@ -167,6 +265,24 @@
                 <button id="toggle-view-btn" class="secondary-btn btn-sm">
                     <span id="toggle-view-text">📱 Switch to Grid View</span>
                 </button>
+            </div>
+        </section>
+
+        <!-- Temi's Gallery Showcase Section -->
+        <section id="photo-gallery" class="section-padding gallery-section">
+            <div class="section-header text-center">
+                <span class="section-tag">MEMORIES & SMILES</span>
+                <h2 class="section-title">Celebrating Temi ✨</h2>
+                <p class="section-subtitle">Moments of joy, elegance, and sunshine.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-card"><img src="./Images/11042739-69FF-4947-A5B2-6C70FC82D2F8_1_105_c.jpeg" alt="Temi Photo 1" loading="lazy"></div>
+                <div class="gallery-card"><img src="./Images/2607889E-EC46-4733-8DC9-AA96E3F67094_1_105_c.jpeg" alt="Temi Photo 2" loading="lazy"></div>
+                <div class="gallery-card"><img src="./Images/42DCFB78-FE64-4617-993C-F853BD135B6B_1_105_c.jpeg" alt="Temi Photo 3" loading="lazy"></div>
+                <div class="gallery-card"><img src="./Images/53138422-E9C8-4C8D-89D6-ED45B26769D6_1_105_c.jpeg" alt="Temi Photo 4" loading="lazy"></div>
+                <div class="gallery-card"><img src="./Images/80FA9039-13D5-4E5E-BDBE-85D4D41C9A49_1_105_c.jpeg" alt="Temi Photo 5" loading="lazy"></div>
+                <div class="gallery-card"><img src="./Images/A59B210F-EF6D-4FC6-8FE8-049ED450C022_1_105_c.jpeg" alt="Temi Photo 6" loading="lazy"></div>
             </div>
         </section>
 
