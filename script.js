@@ -169,25 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadTheme() {
-        const storedTheme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
-        document.documentElement.setAttribute('data-theme', storedTheme);
-        updateThemeIcon(storedTheme);
-    }
-
-    function toggleTheme() {
-        const current = document.documentElement.getAttribute('data-theme') || 'dark';
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem(STORAGE_KEY_THEME, next);
-        updateThemeIcon(next);
-        showToast(`Switched to ${next} theme 🌓`);
-    }
-
-    function updateThemeIcon(theme) {
-        const span = document.querySelector('#theme-toggle .theme-icon');
-        if (span) {
-            span.textContent = theme === 'dark' ? '🌙' : '☀️';
-        }
+        document.documentElement.setAttribute('data-theme', 'dark');
     }
 
     // ==========================================
