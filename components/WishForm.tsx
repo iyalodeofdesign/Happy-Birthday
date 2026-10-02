@@ -62,106 +62,109 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
 
   return (
     <section id="write-wish" className="w-full max-w-2xl mx-auto py-12 px-4">
-      <div className="text-center mb-8">
-        <span className="text-xs font-extrabold tracking-widest text-amber-400 uppercase block mb-1">
-          MEMORIES AND SMILES
-        </span>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
-          What do you want Temi to know today?
-        </h2>
-        <p className="text-slate-400 mt-2 text-base font-normal">
-          Your message will be added directly to Temi's personal birthday carousel.
-        </p>
-      </div>
-
-      {/* Main Wish Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden"
-      >
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-amber-500" />
-
-        {/* User Name Input */}
-        <div className="space-y-2">
-          <label htmlFor="user-name" className="block text-sm font-semibold text-slate-200">
-            Your Name <span className="text-rose-500">*</span>
-          </label>
-          <input
-            id="user-name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Sarah, Uncle Dave, Alex from Work"
-            required
-            maxLength={50}
-            className="w-full bg-slate-950/60 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
-          />
-        </div>
-
-        {/* User Message Textarea */}
-        <div className="space-y-2">
-          <label htmlFor="user-message" className="block text-sm font-semibold text-slate-200">
-            Your Birthday Wish for Temi <span className="text-rose-500">*</span>
-          </label>
-          <textarea
-            id="user-message"
-            rows={5}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Write something heartfelt, funny, or encouraging for Temi..."
-            required
-            maxLength={1000}
-            className="w-full bg-slate-950/60 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none"
-          />
-          <div className="text-right text-xs text-slate-500">
-            {message.length} / 1000
+      {!isSubmitted ? (
+        <>
+          {/* Form Header (Visible only when not yet submitted) */}
+          <div className="text-center mb-8">
+            <span className="text-xs font-extrabold tracking-widest text-amber-400 uppercase block mb-1">
+              MEMORIES AND SMILES
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+              What do you want Temi to know today?
+            </h2>
+            <p className="text-slate-400 mt-2 text-base font-normal">
+              Your message will be added directly to Temi's personal birthday carousel.
+            </p>
           </div>
-        </div>
 
-        {/* Image Upload Input ("Memories and Smiles") */}
-        <div className="space-y-2">
-          <label className="block text-sm font-semibold text-slate-200">
-            Add a Memory Photo with Temi <span className="text-slate-500 font-normal">(Optional)</span>
-          </label>
-          
-          <div className="relative border-2 border-dashed border-slate-700 hover:border-amber-400/60 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-950/40">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-            />
-            {imagePreview ? (
-              <div className="flex items-center gap-4 text-left">
-                <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-600 flex-shrink-0">
-                  <Image src={imagePreview} alt="Memory Preview" fill className="object-cover" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-200 truncate">{imageFile?.name}</p>
-                  <p className="text-xs text-amber-400 mt-1">Photo attached ✨ Click to change</p>
-                </div>
+          {/* Main Wish Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-amber-500" />
+
+            {/* User Name Input */}
+            <div className="space-y-2">
+              <label htmlFor="user-name" className="block text-sm font-semibold text-slate-200">
+                Your Name <span className="text-rose-500">*</span>
+              </label>
+              <input
+                id="user-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Sarah, Uncle Dave, Alex from Work"
+                required
+                maxLength={50}
+                className="w-full bg-slate-950/60 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
+              />
+            </div>
+
+            {/* User Message Textarea */}
+            <div className="space-y-2">
+              <label htmlFor="user-message" className="block text-sm font-semibold text-slate-200">
+                Your Birthday Wish for Temi <span className="text-rose-500">*</span>
+              </label>
+              <textarea
+                id="user-message"
+                rows={5}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write something heartfelt, funny, or encouraging for Temi..."
+                required
+                maxLength={1000}
+                className="w-full bg-slate-950/60 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none"
+              />
+              <div className="text-right text-xs text-slate-500">
+                {message.length} / 1000
               </div>
-            ) : (
-              <div className="py-3 flex flex-col items-center">
-                <span className="text-2xl mb-1">📸</span>
-                <p className="text-sm font-medium text-slate-300">Upload a picture with Temi</p>
-                <p className="text-xs text-slate-500 mt-1">PNG, JPG, or WEBP up to 10MB</p>
+            </div>
+
+            {/* Image Upload Input ("Memories and Smiles") */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-slate-200">
+                Add a Memory Photo with Temi <span className="text-slate-500 font-normal">(Optional)</span>
+              </label>
+              
+              <div className="relative border-2 border-dashed border-slate-700 hover:border-amber-400/60 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-950/40">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                />
+                {imagePreview ? (
+                  <div className="flex items-center gap-4 text-left">
+                    <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-600 flex-shrink-0">
+                      <Image src={imagePreview} alt="Memory Preview" fill className="object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-slate-200 truncate">{imageFile?.name}</p>
+                      <p className="text-xs text-amber-400 mt-1">Photo attached ✨ Click to change</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="py-3 flex flex-col items-center">
+                    <span className="text-2xl mb-1">📸</span>
+                    <p className="text-sm font-medium text-slate-300">Upload a picture with Temi</p>
+                    <p className="text-xs text-slate-500 mt-1">PNG, JPG, or WEBP up to 10MB</p>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-        >
-          Send Wish ❤️
-        </button>
-      </form>
-
-      {/* SUCCESS POPUP MODAL */}
-      {isSubmitted && (
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+            >
+              Send Wish ❤️
+            </button>
+          </form>
+        </>
+      ) : (
+        /* SUCCESS POPUP MODAL (Renders ONLY when isSubmitted is true) */
         <div className="fixed inset-0 z-[6000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
           <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl space-y-6 relative overflow-hidden animate-scale-up">
             <div className="w-16 h-16 mx-auto bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-3xl animate-bounce">

@@ -394,6 +394,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             triggerConfetti();
 
+            const sectionHeader = document.querySelector('.form-section .section-header');
+            if (sectionHeader) sectionHeader.classList.add('hidden');
             document.getElementById('wish-form').classList.add('hidden');
             document.getElementById('wish-success-card').classList.remove('hidden');
 
