@@ -7,7 +7,7 @@ import GallerySection from "@/components/GallerySection";
 
 export default function WishesPage() {
   return (
-    <main className="min-h-screen bg-white text-gray-900 font-sans">
+    <main className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       <Navbar />
 
       {/* Guestbook Section */}

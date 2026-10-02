@@ -66,7 +66,7 @@ interface WishGridProps {
 }
 
 export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
-  // 2. STATE-DRIVEN HOVER LOGIC (CRITICAL)
+  // 3. STATE-DRIVEN HOVER LOGIC (CRITICAL)
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [wishList, setWishList] = useState<WishItem[]>(wishes);
 
@@ -79,28 +79,30 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
   };
 
   return (
-    <section id="wishes-section" className="w-full bg-white text-gray-900 min-h-screen py-16">
-      {/* Section Header */}
-      <div className="max-w-7xl mx-auto px-4 mb-12 flex flex-col sm:flex-row sm:items-end justify-between border-b border-gray-100 pb-6 gap-4">
-        <div>
-          <span className="text-xs font-black tracking-widest text-pink-500 uppercase block mb-1">
-            CELEBRATING TEMI
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
-            Messages for Temi 💌
-          </h2>
-          <p className="text-gray-400 text-sm sm:text-base mt-1">
-            Hover over any card to illuminate the wish written for Temi.
-          </p>
+    <section id="wishes-section" className="w-full bg-slate-950 text-slate-100 min-h-screen py-16 px-4">
+      {/* 1. Header Section (Centered) */}
+      <div className="max-w-4xl mx-auto text-center mb-16">
+        {/* Pill Badge */}
+        <div className="inline-block border border-white/20 bg-white/5 backdrop-blur-md rounded-full px-4 py-1.5 text-xs font-semibold text-white/70 tracking-widest uppercase mb-4 shadow-sm">
+          Wishes
         </div>
 
-        <div className="inline-flex items-center gap-2 bg-slate-50 border border-gray-200 px-4 py-2 rounded-full text-sm font-bold text-gray-700 shadow-sm self-start sm:self-auto">
+        {/* Main Heading */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          Messages for Temi
+        </h1>
+        <p className="text-slate-400 text-sm sm:text-base mt-3 max-w-xl mx-auto">
+          Hover over any card to illuminate the wish written for Temi.
+        </p>
+
+        {/* Counter Pill */}
+        <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-xs font-bold text-slate-300 shadow-sm mt-6">
           <span className="text-pink-500 animate-pulse">❤️</span>
           <span>{wishList.length} wishes for Temi</span>
         </div>
       </div>
 
-      {/* 1. STRUCTURAL LOGIC (True Masonry CSS Columns) */}
+      {/* 2. Masonry Grid Structure (True CSS Columns) */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -111,7 +113,7 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
             transition: { staggerChildren: 0.1 },
           },
         }}
-        className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 max-w-7xl mx-auto p-4"
+        className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 w-full max-w-7xl mx-auto"
       >
         {wishList.map((item) => {
           // Hover State Evaluation
@@ -127,35 +129,35 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
               }}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className="break-inside-avoid relative"
+              className="break-inside-avoid relative group"
             >
-              {/* 3. THE "LIGHT RAY" GLOW EFFECT (Light Theme Background Div Behind Card z-[-1]) */}
+              {/* Light Ray Background Glow Div (Behind Card z-[-1]) */}
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 0.6, scale: 1.05 }}
+                    animate={{ opacity: 0.7, scale: 1.05 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute -inset-4 bg-gradient-to-r from-pink-300 via-orange-300 to-sky-300 blur-[40px] opacity-60 transition-opacity duration-500 rounded-3xl z-[-1] pointer-events-none"
+                    className="absolute -inset-4 bg-gradient-to-r from-pink-500/30 via-orange-500/30 to-sky-500/30 blur-[40px] opacity-70 transition-opacity duration-500 rounded-3xl z-[-1] pointer-events-none"
                   />
                 )}
               </AnimatePresence>
 
-              {/* CARD CONTAINER (relative z-10 with solid white background for sharp text) */}
+              {/* CARD CONTAINER (relative z-10) */}
               <div
-                className={`relative z-10 bg-white border rounded-2xl p-6 sm:p-7 transition-all duration-500 ease-out ${
+                className={`relative z-10 rounded-2xl p-6 sm:p-7 transition-all duration-500 ease-in-out border ${
                   isHovered
-                    ? "opacity-100 border-pink-200 shadow-2xl scale-[1.02] translate-y-[-2px]"
+                    ? "bg-white/10 border-white/20 shadow-2xl scale-[1.02] translate-y-[-2px] backdrop-blur-md"
                     : isAnotherHovered
-                    ? "opacity-20 border-gray-100 shadow-none scale-[0.98]"
-                    : "opacity-100 border-gray-200 shadow-sm"
+                    ? "bg-white/[0.02] border-white/5 opacity-25 scale-[0.98]"
+                    : "bg-white/[0.04] border-white/10 opacity-100"
                 }`}
               >
-                {/* Quotation Icon */}
+                {/* Quotation Mark */}
                 <div
-                  className={`text-4xl font-serif leading-none mb-2 transition-colors duration-500 ${
-                    isHovered ? "text-pink-500 opacity-90" : "text-gray-200"
+                  className={`text-4xl font-serif leading-none mb-3 transition-colors duration-500 ${
+                    isHovered ? "text-pink-400" : "text-white/20"
                   }`}
                 >
                   “
@@ -166,8 +168,8 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
                   <div
                     className={`relative w-full h-44 mb-4 rounded-xl overflow-hidden border transition-all duration-500 ${
                       isHovered
-                        ? "opacity-100 border-pink-100"
-                        : "opacity-40 border-gray-100"
+                        ? "opacity-100 border-white/20 shadow-md"
+                        : "opacity-30 border-white/5"
                     }`}
                   >
                     <Image
@@ -180,10 +182,12 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
                   </div>
                 )}
 
-                {/* Wish Message Text: text-gray-200 by default (faint), text-gray-900 when hovered */}
+                {/* Wish Message Text: Heavily dimmed text-white/30 by default, text-white when hovered */}
                 <p
-                  className={`text-base sm:text-lg italic font-medium leading-relaxed mb-6 transition-colors duration-500 ${
-                    isHovered ? "text-gray-900 font-semibold" : "text-gray-200"
+                  className={`text-base sm:text-lg italic leading-relaxed mb-6 transition-colors duration-500 ${
+                    isHovered
+                      ? "text-white font-medium"
+                      : "text-white/30"
                   }`}
                 >
                   "{item.message}"
@@ -192,7 +196,7 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
                 {/* Card Footer */}
                 <div
                   className={`flex items-center justify-between pt-4 border-t transition-colors duration-500 ${
-                    isHovered ? "border-gray-100" : "border-gray-100/50"
+                    isHovered ? "border-white/15" : "border-white/5"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -200,22 +204,22 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
                       className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-500 ${
                         isHovered
                           ? "bg-pink-500 text-white shadow-md"
-                          : "bg-gray-100 text-gray-300"
+                          : "bg-white/10 text-white/30"
                       }`}
                     >
                       {item.sender.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <h4
-                        className={`font-extrabold text-sm leading-snug transition-colors duration-500 ${
-                          isHovered ? "text-gray-900" : "text-gray-200"
+                        className={`font-bold text-sm leading-snug transition-colors duration-500 ${
+                          isHovered ? "text-white" : "text-white/30"
                         }`}
                       >
                         {item.sender}
                       </h4>
                       <span
                         className={`text-xs transition-colors duration-500 ${
-                          isHovered ? "text-gray-400" : "text-gray-200"
+                          isHovered ? "text-slate-400" : "text-white/20"
                         }`}
                       >
                         {item.date || "Today"}
@@ -231,8 +235,8 @@ export default function WishGrid({ wishes = DEFAULT_WISHES }: WishGridProps) {
                     }}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-500 ${
                       isHovered
-                        ? "bg-pink-50 hover:bg-pink-500 text-pink-600 hover:text-white border border-pink-200 shadow-sm"
-                        : "bg-gray-50 text-gray-300 border border-gray-100"
+                        ? "bg-pink-500/20 hover:bg-pink-500 text-pink-300 hover:text-white border border-pink-500/40 shadow-sm"
+                        : "bg-white/5 text-white/30 border border-white/5"
                     }`}
                   >
                     <span>❤️</span>
