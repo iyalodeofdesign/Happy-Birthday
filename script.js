@@ -196,12 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateWishesCounter() {
         const count = wishes.length;
         const countPill = document.getElementById('counter-count');
-        const heroCounter = document.getElementById('hero-counter-text');
-
         if (countPill) countPill.textContent = count;
-        if (heroCounter) {
-            heroCounter.textContent = `${count} people celebrating Temi today ❤️`;
-        }
     }
 
     function renderWishes() {
