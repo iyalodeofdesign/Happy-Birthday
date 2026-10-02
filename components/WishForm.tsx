@@ -1,0 +1,231 @@
+"use client";
+
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import Image from "next/image";
+
+interface WishFormProps {
+  onWishSubmitted?: (newWish: { name: string; message: string; imageUrl?: string }) => void;
+  onNavigateToCarousel?: () => void;
+}
+
+export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: WishFormProps) {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Success Modal & Temi's Message Modal States
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showThankYouNote, setShowThankYouNote] = useState(false);
+
+  // Handle Image File Selection
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Form Submission
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !message.trim()) return;
+
+    const wishData = {
+      name: name.trim(),
+      message: message.trim(),
+      imageUrl: imagePreview || undefined,
+    };
+
+    if (onWishSubmitted) {
+      onWishSubmitted(wishData);
+    }
+
+    setIsSubmitted(true);
+  };
+
+  const resetForm = () => {
+    setName("");
+    setMessage("");
+    setImageFile(null);
+    setImagePreview(null);
+    setIsSubmitted(false);
+    setShowThankYouNote(false);
+  };
+
+  return (
+    <section id="write-wish" className="w-full max-w-2xl mx-auto py-12 px-4">
+      <div className="text-center mb-8">
+        <span className="text-xs font-extrabold tracking-widest text-amber-400 uppercase block mb-1">
+          MEMORIES AND SMILES
+        </span>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+          What do you want Temi to know today?
+        </h2>
+        <p className="text-slate-400 mt-2 text-base font-normal">
+          Your message will be added directly to Temi's personal birthday carousel.
+        </p>
+      </div>
+
+      {/* Main Wish Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 relative overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-amber-500" />
+
+        {/* User Name Input */}
+        <div className="space-y-2">
+          <label htmlFor="user-name" className="block text-sm font-semibold text-slate-200">
+            Your Name <span className="text-rose-500">*</span>
+          </label>
+          <input
+            id="user-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Sarah, Uncle Dave, Alex from Work"
+            required
+            maxLength={50}
+            className="w-full bg-slate-950/60 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all"
+          />
+        </div>
+
+        {/* User Message Textarea */}
+        <div className="space-y-2">
+          <label htmlFor="user-message" className="block text-sm font-semibold text-slate-200">
+            Your Birthday Wish for Temi <span className="text-rose-500">*</span>
+          </label>
+          <textarea
+            id="user-message"
+            rows={5}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Write something heartfelt, funny, or encouraging for Temi..."
+            required
+            maxLength={1000}
+            className="w-full bg-slate-950/60 border border-slate-700/80 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none"
+          />
+          <div className="text-right text-xs text-slate-500">
+            {message.length} / 1000
+          </div>
+        </div>
+
+        {/* Image Upload Input ("Memories and Smiles") */}
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-slate-200">
+            Add a Memory Photo with Temi <span className="text-slate-500 font-normal">(Optional)</span>
+          </label>
+          
+          <div className="relative border-2 border-dashed border-slate-700 hover:border-amber-400/60 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-950/40">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            />
+            {imagePreview ? (
+              <div className="flex items-center gap-4 text-left">
+                <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-600 flex-shrink-0">
+                  <Image src={imagePreview} alt="Memory Preview" fill className="object-cover" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-slate-200 truncate">{imageFile?.name}</p>
+                  <p className="text-xs text-amber-400 mt-1">Photo attached ✨ Click to change</p>
+                </div>
+              </div>
+            ) : (
+              <div className="py-3 flex flex-col items-center">
+                <span className="text-2xl mb-1">📸</span>
+                <p className="text-sm font-medium text-slate-300">Upload a picture with Temi</p>
+                <p className="text-xs text-slate-500 mt-1">PNG, JPG, or WEBP up to 10MB</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+        >
+          Send Wish ❤️
+        </button>
+      </form>
+
+      {/* SUCCESS POPUP MODAL */}
+      {isSubmitted && (
+        <div className="fixed inset-0 z-[6000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+          <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl space-y-6 relative overflow-hidden animate-scale-up">
+            <div className="w-16 h-16 mx-auto bg-emerald-500/10 border border-emerald-500/30 rounded-full flex items-center justify-center text-3xl animate-bounce">
+              🎉
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-extrabold text-emerald-400">
+                Your wish has been added!
+              </h3>
+              <p className="text-slate-300 text-base mt-2 leading-relaxed">
+                Temi now has one more reason to smile today. Thank you for sharing your love and memories!
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-3 pt-2">
+              <button
+                onClick={() => {
+                  setIsSubmitted(false);
+                  if (onNavigateToCarousel) onNavigateToCarousel();
+                }}
+                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5"
+              >
+                💌 Read other wishes
+              </button>
+
+              <button
+                onClick={() => setShowThankYouNote(true)}
+                className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold py-3 px-5 rounded-xl border border-slate-700 transition-all"
+              >
+                ✨ See Temi's message to you
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TEMI'S THANK YOU NOTE MODAL */}
+      {showThankYouNote && (
+        <div className="fixed inset-0 z-[6500] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in">
+          <div className="bg-slate-900 border border-amber-500/30 rounded-2xl p-8 max-w-md w-full text-center shadow-2xl space-y-6 relative overflow-hidden">
+            <div className="text-4xl animate-pulse">💖</div>
+
+            <h3 className="text-2xl font-extrabold text-amber-400">
+              A Message From Temi ❤️
+            </h3>
+
+            <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-5 text-slate-200 text-sm italic leading-relaxed text-left">
+              "To everyone who took the time to write a message, share a photo, or send love today — thank you from the bottom of my heart! Your warm wishes and memories mean more to me than words can say. Having you all in my life is the greatest gift of all. Lots of love, Temi ✨"
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={() => {
+                  resetForm();
+                  if (onNavigateToCarousel) onNavigateToCarousel();
+                }}
+                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all"
+              >
+                Back to Wishes Carousel 🎠
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}

@@ -233,8 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
         card.setAttribute('data-id', wish.id);
 
         const initial = wish.sender ? wish.sender.charAt(0).toUpperCase() : 'T';
+        const photoHTML = wish.photoUrl ? `<div class="card-memory-photo"><img src="${escapeHTML(wish.photoUrl)}" alt="Memory photo with Temi" loading="lazy"></div>` : '';
 
         card.innerHTML = `
+            ${photoHTML}
             <div class="card-quote-icon">“</div>
             <p class="card-message">${escapeHTML(wish.message)}</p>
 
@@ -341,14 +343,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Success State Buttons
-        const writeAnotherBtn = document.getElementById('write-another-btn');
-        if (writeAnotherBtn) {
-            writeAnotherBtn.addEventListener('click', () => {
-                document.getElementById('wish-form').reset();
-                document.getElementById('wish-form').classList.remove('hidden');
-                document.getElementById('wish-success-card').classList.add('hidden');
-                document.getElementById('char-count').textContent = '0';
+        // Temi Message Modal Handlers
+        const seeTemisMessageBtn = document.getElementById('see-temis-message-btn');
+        const temiMessageModal = document.getElementById('temi-message-modal');
+        const closeTemiModal = document.getElementById('close-temi-modal');
+        const backToWishesBtn = document.getElementById('back-to-wishes-btn');
+
+        if (seeTemisMessageBtn && temiMessageModal) {
+            seeTemisMessageBtn.addEventListener('click', () => {
+                temiMessageModal.classList.remove('hidden');
+            });
+        }
+
+        if (closeTemiModal && temiMessageModal) {
+            closeTemiModal.addEventListener('click', () => {
+                temiMessageModal.classList.add('hidden');
+            });
+        }
+
+        if (backToWishesBtn && temiMessageModal) {
+            backToWishesBtn.addEventListener('click', () => {
+                temiMessageModal.classList.add('hidden');
+            });
+        }
+
+        // Image file preview text update
+        const photoInput = document.getElementById('sender-photo');
+        const uploadPromptText = document.getElementById('upload-prompt-text');
+        if (photoInput && uploadPromptText) {
+            photoInput.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    uploadPromptText.innerHTML = `<span>📸 Photo Selected: ${escapeHTML(e.target.files[0].name)}</span>`;
+                }
             });
         }
 
@@ -381,31 +407,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const nameInput = document.getElementById('sender-name');
         const messageInput = document.getElementById('sender-message');
+        const photoInput = document.getElementById('sender-photo');
 
         const sender = nameInput.value.trim();
         const message = messageInput.value.trim();
 
         if (!sender || !message) return;
 
-        const newWish = {
-            id: 'wish-' + Date.now(),
-            sender,
-            message,
-            date: 'Just now',
-            loves: 1,
-            timestamp: Date.now()
+        const processSubmission = (photoDataUrl = null) => {
+            const newWish = {
+                id: 'wish-' + Date.now(),
+                sender,
+                message,
+                photoUrl: photoDataUrl,
+                date: 'Just now',
+                loves: 1,
+                timestamp: Date.now()
+            };
+
+            wishes.unshift(newWish);
+            saveWishes();
+            renderWishes();
+
+            triggerConfetti();
+
+            document.getElementById('wish-form').classList.add('hidden');
+            document.getElementById('wish-success-card').classList.remove('hidden');
+
+            showToast('Your birthday wish for Temi has been posted! 🎉');
         };
 
-        wishes.unshift(newWish);
-        saveWishes();
-        renderWishes();
-
-        triggerConfetti();
-
-        document.getElementById('wish-form').classList.add('hidden');
-        document.getElementById('wish-success-card').classList.remove('hidden');
-
-        showToast('Your birthday wish for Temi has been posted! 🎉');
+        if (photoInput && photoInput.files && photoInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                processSubmission(event.target.result);
+            };
+            reader.readAsDataURL(photoInput.files[0]);
+        } else {
+            processSubmission(null);
+        }
     }
 
     // Touch Swiping Logic

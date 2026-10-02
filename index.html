@@ -165,10 +165,9 @@
         <!-- Write a Wish Section -->
         <section id="write-wish" class="section-padding form-section">
             <div class="section-header text-center">
-                <span class="section-tag">LEAVE A MESSAGE</span>
-                <h2 class="section-title">What do you want Temi to know today? 💬</h2>
-                <p class="section-subtitle">Your message will be added directly to Temi's personal birthday carousel.
-                </p>
+                <span class="section-tag">MEMORIES AND SMILES</span>
+                <h2 class="section-title">What do you want Temi to know today?</h2>
+                <p class="section-subtitle">Your message will be added directly to Temi's personal birthday carousel.</p>
             </div>
 
             <div class="form-container">
@@ -189,31 +188,62 @@
                         <div class="character-count"><span id="char-count">0</span> / 1000</div>
                     </div>
 
+                    <!-- Image Upload ("Memories and Smiles") -->
+                    <div class="form-group">
+                        <label for="sender-photo">Add a Memory Photo with Temi <span class="field-optional">(Optional)</span></label>
+                        <div class="file-upload-dropzone">
+                            <input type="file" id="sender-photo" accept="image/*" class="file-input">
+                            <div class="upload-prompt" id="upload-prompt-text">
+                                <span class="upload-icon">📸</span>
+                                <span class="upload-text">Upload a picture with Temi</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="submit" id="submit-wish-btn" class="primary-btn btn-full">
-                        <span>Send My Wish ❤️</span>
+                        <span>Send Wish</span>
                     </button>
                 </form>
 
-                <!-- Success Confirmation State (Hidden by default) -->
+                <!-- Success Confirmation State (Modal Overlay / Card) -->
                 <div id="wish-success-card" class="success-card hidden">
                     <div class="success-icon-wrap">
                         <span class="success-emoji">🎉</span>
                     </div>
                     <h3 class="success-title">Your wish has been added!</h3>
-                    <p class="success-message">Temi now has one more reason to smile today. Thank you for sharing the
-                        love!</p>
+                    <p class="success-message">Temi now has one more reason to smile today. Thank you for sharing your love and memories!</p>
 
                     <div class="success-actions">
                         <a href="#wishes-section" class="primary-btn" id="success-read-wishes-btn">
-                            <span>💌 Read Other Wishes for Temi</span>
+                            <span>💌 Read other wishes</span>
                         </a>
-                        <button type="button" class="secondary-btn" id="write-another-btn">
-                            <span>✍️ Write Another Message</span>
+                        <button type="button" class="secondary-btn" id="see-temis-message-btn">
+                            <span>✨ See Temi's message to you</span>
                         </button>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Temi's Thank You Message Modal -->
+        <div id="temi-message-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+            <div class="modal-card text-center">
+                <div class="modal-header">
+                    <h2 class="modal-heading">A Message From Temi ❤️</h2>
+                    <button class="close-btn" id="close-temi-modal" aria-label="Close message">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="temi-note-box">
+                        <p class="temi-note-text">
+                            "To everyone who took the time to write a message, share a photo, or send love today — thank you from the bottom of my heart! Your warm wishes and memories mean more to me than words can say. Having you all in my life is the greatest gift of all. Lots of love, Temi ✨"
+                        </p>
+                    </div>
+                    <a href="#wishes-section" class="primary-btn btn-full" id="back-to-wishes-btn">
+                        <span>Back to Wishes Carousel 🎠</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- Wishes Carousel Section -->
         <section id="wishes-section" class="section-padding wishes-section">
