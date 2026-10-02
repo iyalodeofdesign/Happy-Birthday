@@ -303,31 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('wish-form');
         if (form) form.addEventListener('submit', handleWishSubmit);
 
-        // Carousel Controls
-        const prevBtn = document.getElementById('carousel-prev');
-        const nextBtn = document.getElementById('carousel-next');
 
-        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlideIndex - 1));
-        if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlideIndex + 1));
-
-        // Toggle Grid vs Carousel View
-        const toggleViewBtn = document.getElementById('toggle-view-btn');
-        if (toggleViewBtn) {
-            toggleViewBtn.addEventListener('click', () => {
-                isGridView = !isGridView;
-                const track = document.getElementById('carousel-track');
-                const textSpan = document.getElementById('toggle-view-text');
-
-                if (isGridView) {
-                    track.classList.add('grid-mode');
-                    textSpan.textContent = '🎡 Switch to Carousel View';
-                } else {
-                    track.classList.remove('grid-mode');
-                    textSpan.textContent = '📱 Switch to Grid View';
-                }
-                renderWishes();
-            });
-        }
 
 
         // Temi Message Modal Handlers
