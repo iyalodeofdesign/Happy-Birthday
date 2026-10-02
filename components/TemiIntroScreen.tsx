@@ -97,10 +97,10 @@ export default function TemiIntroScreen({ onWriteWishClick }: TemiIntroScreenPro
         >
           <div className="text-4xl mb-3 animate-bounce">🎂</div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3 text-slate-900">
-            You are here because of Temi
+            You Are Here Because Of Temi
           </h1>
           <p className="text-base text-slate-600 mb-8 leading-relaxed font-normal">
-            why don't you write her a wish to mark the beginning of the rest of her day
+            Why Don't You Write Her A Wish To Mark The Beginning Of The Rest Of Her Day
           </p>
           <button
             onClick={handleWriteWish}
