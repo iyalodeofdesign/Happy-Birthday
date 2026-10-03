@@ -98,7 +98,7 @@ body {
 }
 
 .text-center { text-align: center; }
-.hidden { display: none !important; }
+.hidden { display: none; }
 
 /* ==========================================================================
    PRE-LANDING INTRO SCREEN (TemiIntroScreen Newspaper Collage)

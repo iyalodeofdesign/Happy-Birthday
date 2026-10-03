@@ -8,7 +8,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  const isHomeActive = pathname === "/" || pathname === "/write-a-wish";
+  const isHomeActive = pathname === "/write-a-wish";
   const isWishesActive = pathname.startsWith("/wishes");
 
   const closeMenu = () => setIsMobileMenuOpen(false);
@@ -29,7 +29,7 @@ export default function Navbar() {
         {/* Desktop Navigation Links Container (Hidden on mobile, visible md and up) */}
         <div className="hidden md:flex items-center gap-6 sm:gap-8">
           <Link
-            href="/"
+            href="/write-a-wish"
             className={`py-1 text-sm font-bold transition-all relative ${
               isHomeActive
                 ? "text-white border-b-2 border-pink-500"
@@ -96,7 +96,7 @@ export default function Navbar() {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 py-4 px-6 shadow-2xl flex flex-col space-y-3 z-50">
           <Link
-            href="/"
+            href="/write-a-wish"
             onClick={closeMenu}
             className={`py-2 text-base font-bold transition-all ${
               isHomeActive
