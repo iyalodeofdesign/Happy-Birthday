@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -9,7 +9,7 @@ const TEMI_IMAGES = [
   { id: 1, src: "/images/11042739-69FF-4947-A5B2-6C70FC82D2F8_1_105_c.jpeg", alt: "Temi ✨", className: "w-44 h-56 top-[14%] left-[14%] z-10 rotate-[-6deg]", duration: 6.2, delay: 0 },
   { id: 2, src: "/images/2607889E-EC46-4733-8DC9-AA96E3F67094_1_105_c.jpeg", alt: "Temi Photo 2", className: "w-40 h-52 top-[10%] right-[18%] z-10 rotate-[5deg]", duration: 5.4, delay: 0.8 },
   { id: 3, src: "/images/42DCFB78-FE64-4617-993C-F853BD135B6B_1_105_c.jpeg", alt: "Temi Photo 3", className: "w-52 h-64 top-[38%] left-[8%] z-20 rotate-[-3deg]", duration: 7.5, delay: 0.3 },
-  { id: 4, src: "/images/53138422-E9C8-4C8D-89D6-ED45B26769D6_1_105_c.jpeg", alt: "Temi Photo 4", className: "w-56 h-68 top-[35%] right-[9%] z-20 rotate-[7deg]", duration: 4.8, delay: 1.2 },
+  { id: 4, src: "/images/53138422-E9C8-4C8D-89D6-ED45B26769D6_1_105_c.jpeg", alt: "Temi Photo 4", className: "w-56 h-[17rem] top-[35%] right-[9%] z-20 rotate-[7deg]", duration: 4.8, delay: 1.2 },
   { id: 5, src: "/images/80FA9039-13D5-4E5E-BDBE-85D4D41C9A49_1_105_c.jpeg", alt: "Joyful Moments ❤️", className: "w-48 h-60 bottom-[12%] left-[22%] z-10 rotate-[4deg]", duration: 8.0, delay: 0.5 },
   { id: 6, src: "/images/A59B210F-EF6D-4FC6-8FE8-049ED450C022_1_105_c.jpeg", alt: "Temi Photo 6", className: "w-44 h-56 bottom-[8%] right-[24%] z-10 rotate-[-7deg]", duration: 6.6, delay: 1.5 },
   { id: 7, src: "/images/B89C2BC9-D924-4EC5-880F-786FDCDED6C1_1_201_a.jpeg", alt: "Temi Photo 7", className: "w-36 h-44 top-[8%] left-[42%] z-0 rotate-[2deg] opacity-90", duration: 5.8, delay: 0.2 },
@@ -21,24 +21,10 @@ interface TemiIntroScreenProps {
   onWriteWishClick?: () => void;
 }
 
-/**
- * TemiIntroScreen
- * Serves as a strict gateway screen. Does NOT auto-bypass.
- * The user MUST click "Write Wish" to proceed to the main app.
- */
 export default function TemiIntroScreen({ onWriteWishClick }: TemiIntroScreenProps) {
-  // Strict State Control: showIntro defaults to true so it acts as a click-gated barrier
-  const [showIntro, setShowIntro] = useState<boolean>(true);
-
   const handleWriteWish = () => {
-    // Only user click on "Write Wish" will set showIntro to false
-    setShowIntro(false);
-    if (onWriteWishClick) {
-      onWriteWishClick();
-    }
+    onWriteWishClick?.();
   };
-
-  if (!showIntro) return null;
 
   return (
     <AnimatePresence>

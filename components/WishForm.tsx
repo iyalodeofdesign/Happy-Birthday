@@ -20,6 +20,8 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
 
   // Success Modal & Temi's Message Modal States
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [showThankYouNote, setShowThankYouNote] = useState(false);
 
   // Handle Image File Selection
@@ -47,7 +49,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
   // Form Submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !message.trim() || isImageUploading) return;
+    if (!name.trim() || !message.trim() || isImageUploading || isSubmitting) return;
 
     const wishData = {
       name: name.trim(),
@@ -55,21 +57,26 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
       imageUrl: imagePreview || undefined,
     };
 
-    if (onWishSubmitted) {
-      onWishSubmitted(wishData);
-    }
-
+    setIsSubmitting(true);
+    setSubmitError(null);
     try {
-      await fetch("/api/wish", {
+      const response = await fetch("/api/wish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(wishData),
       });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Your wish could not be saved. Please try again.");
+      }
+      onWishSubmitted?.(wishData);
+      router.refresh();
+      setIsSubmitted(true);
     } catch (err) {
-      console.error("Failed to send wish to API route:", err);
+      setSubmitError(err instanceof Error ? err.message : "Your wish could not be saved. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitted(true);
   };
 
   const resetForm = () => {
@@ -79,6 +86,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
     setImagePreview(null);
     setIsImageUploading(false);
     setIsSubmitted(false);
+    setSubmitError(null);
     setShowThankYouNote(false);
   };
 
@@ -95,7 +103,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
               What do you want Temi to know today?
             </h2>
             <p className="text-slate-400 mt-2 text-base font-normal">
-              Your message will be added directly to Temi's personal birthday carousel.
+              Your message will appear in Temi's Wishes, and your photo will appear in Memories &amp; Smiles.
             </p>
           </div>
 
@@ -156,7 +164,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  disabled={isImageUploading}
+                  disabled={isImageUploading || isSubmitting}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
                 />
                 {isImageUploading ? (
@@ -204,10 +212,14 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
               </div>
             </div>
 
+            {submitError && (
+              <p role="alert" className="text-sm text-rose-400">{submitError}</p>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isImageUploading}
+              disabled={isImageUploading || isSubmitting}
               className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center justify-center gap-2"
             >
               {isImageUploading ? (
@@ -224,7 +236,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
                   <span>Processing Image...</span>
                 </>
               ) : (
-                <span>Send Wish ❤️</span>
+                <span>{isSubmitting ? "Saving Wish..." : "Send Wish ❤️"}</span>
               )}
             </button>
           </form>

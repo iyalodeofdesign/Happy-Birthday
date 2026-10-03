@@ -22,6 +22,8 @@ Copy the example environment file and add your Resend API key:
 cp .env.example .env
 ```
 
+For local development, `DATABASE_URL` points to `prisma/dev.db`. Compose overrides it to use `/app/data/wishes.db` in a persistent named volume.
+
 Edit `.env` and replace `your_resend_api_key` with your key. Keep this file private; it is excluded from the Docker build context and should not be committed.
 
 ## Build and start
@@ -61,3 +63,33 @@ After pulling new application code, rebuild and recreate the container:
 ```sh
 docker-compose up --build -d
 ```
+
+## Wish storage
+
+The app saves wishes in SQLite before attempting email notifications. Docker applies database migrations on startup and stores the database in the `wishes-data` volume, which survives rebuilds and `docker-compose down`. Removing that volume deletes the saved wishes.
+
+For development outside Docker, configure `.env`, then run:
+
+```sh
+npm ci
+npx prisma generate
+touch prisma/dev.db
+npx prisma migrate deploy
+npm run dev
+```
+
+View saved wishes at `/wishes`. Submissions made before database saving was implemented were only sent through email and cannot be recovered from the database.
+
+## Prisma / OpenSSL container errors
+
+The Docker image uses Debian Bookworm with OpenSSL installed in every stage. Prisma generates its engine inside that image, and the build checks it with a SQLite query before packaging the app.
+
+After updating from the Alpine image, rebuild without cached layers and recreate the container:
+
+```sh
+docker-compose build --pull --no-cache app
+docker-compose up -d --force-recreate app
+docker-compose logs --tail=100 app
+```
+
+The existing `wishes-data` volume is reused.
