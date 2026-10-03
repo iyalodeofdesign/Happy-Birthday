@@ -28,7 +28,7 @@ export default function HomePageClient({ dbImageWishes, showIntroScreen = true }
       ) : (
         <div className="animate-fade-in bg-slate-950 min-h-screen flex flex-col">
           <Navbar />
-          
+
           <div className="py-8 px-4 flex-1">
             <WishForm />
 
