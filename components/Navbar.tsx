@@ -26,8 +26,8 @@ export default function Navbar() {
           <span>Celebrating Temi</span>
         </Link>
 
-        {/* Desktop Navigation Menu (md and up) */}
-        <nav className="hidden md:flex items-center gap-6 sm:gap-8">
+        {/* Desktop Navigation Links Container (Hidden on mobile, visible md and up) */}
+        <div className="hidden md:flex items-center gap-6 sm:gap-8">
           <Link
             href="/"
             className={`py-1 text-sm font-bold transition-all relative ${
@@ -48,9 +48,9 @@ export default function Navbar() {
           >
             Temi's Wishes ✨
           </Link>
-        </nav>
+        </div>
 
-        {/* Mobile Hamburger Menu Toggle Button (md and down) */}
+        {/* Mobile Hamburger Menu Toggle Button (Visible on mobile, hidden md and up) */}
         <button
           onClick={() => setIsMobileMenuOpen((prev) => !prev)}
           className="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-colors"
@@ -92,7 +92,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown Menu (Renders conditionally on mobile) */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800 py-4 px-6 shadow-2xl flex flex-col space-y-3 z-50">
           <Link
