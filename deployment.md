@@ -20,7 +20,7 @@ References: [Vercel SQLite support](https://vercel.com/kb/guide/is-sqlite-suppor
 
 - Nix with access to `nixpkgs`
 - A running Docker daemon (for example, Docker Desktop on macOS or the Docker service on NixOS)
-- A Resend API key for the birthday-wish email notifications
+- Optionally, a Resend API key for the birthday-wish email notifications
 
 Enter a temporary shell with the Docker client and Compose:
 
@@ -32,15 +32,15 @@ Run the commands below from that shell. The Nix shell supplies the command-line 
 
 ## Configure
 
-Copy the example environment file and add your Resend API key:
+If you do not already have a `.env` file, copy the example:
 
 ```sh
 cp .env.example .env
 ```
 
-Set `DATABASE_URL` to your hosted PostgreSQL connection URL. Compose loads them from `.env`.
+Compose starts a local PostgreSQL database and sets the app's `DATABASE_URL` to `postgresql://birthday:birthday@db:5432/birthday`, overriding any value in `.env`. No hosted database is needed for Docker Compose. The database is accessible only within the Compose network and stores wishes in the `postgres_data` volume.
 
-Edit `.env` and replace `your_resend_api_key` with your key. Keep this file private; it is excluded from the Docker build context and should not be committed.
+For email notifications, set `RESEND_API_KEY` in `.env` to your key; otherwise leave it empty. Keep this file private; it is excluded from the Docker build context and should not be committed.
 
 ## Build and start
 
@@ -54,6 +54,8 @@ docker-compose up --build -d
 
 Open [http://localhost:3000](http://localhost:3000). The app listens on port 3000 inside the container; change the left-hand port in `docker-compose.yml` to use a different host port.
 
+Compose waits for PostgreSQL to be healthy before starting the app. The app then applies database migrations before listening on port 3000.
+
 View application logs:
 
 ```sh
@@ -65,6 +67,8 @@ Stop the deployment:
 ```sh
 docker-compose down
 ```
+
+The database volume survives container rebuilds and `docker-compose down`. Running `docker-compose down -v` deletes the saved wishes.
 
 ## Deploying to a server
 
@@ -82,9 +86,9 @@ docker-compose up --build -d
 
 ## Wish storage
 
-The app saves wishes in PostgreSQL before attempting email notifications. Docker applies database migrations on startup; the database is hosted separately.
+The app saves wishes in PostgreSQL before attempting email notifications. Docker Compose manages the local database and applies migrations on app startup. Its bundled database credentials are intended for local development; configure private credentials before deploying to a shared server.
 
-For development outside Docker, configure `.env`, then run:
+For development outside Docker, set `DATABASE_URL` in `.env` to a PostgreSQL database reachable from your host, then run:
 
 ```sh
 npm ci
@@ -107,4 +111,4 @@ docker-compose up -d --force-recreate app
 docker-compose logs --tail=100 app
 ```
 
-Database contents stay in the configured hosted PostgreSQL database.
+Database contents stay in the PostgreSQL volume when rebuilding the app.
