@@ -1,3 +1,19 @@
+# Deploy with Vercel
+
+The app uses hosted PostgreSQL. Local SQLite files cannot persist writable data on Vercel Functions.
+
+1. Connect a PostgreSQL database to your Vercel project through the Marketplace (for example, Neon), or use an existing hosted PostgreSQL database.
+2. In the project's environment variables, set `DATABASE_URL` to a PostgreSQL connection URL that supports both application requests and Prisma migrations. If your provider's pooled URL does not support migrations, use its direct connection URL for `DATABASE_URL`. Use ordinary `postgresql://` or `postgres://` URLs for this project's Prisma 5 client.
+3. Apply these variables to Production. Use a separate database or database branch for Preview, because each deployment applies migrations to its configured database.
+4. Optionally add `RESEND_API_KEY` for email notifications.
+5. Redeploy. `vercel.json` runs the asset preparation, Prisma client generation, pending database migrations, and Next.js build. Clear any manually overridden Vercel Build Command so the checked-in command takes effect.
+
+Copying `.env.example` does not configure Vercel's environment variables. Keep database credentials in Vercel and your ignored local `.env` file.
+
+The PostgreSQL migration initializes a new database. Existing SQLite data and its migration history are not converted automatically; keep any existing SQLite database backed up before moving data separately.
+
+References: [Vercel SQLite support](https://vercel.com/kb/guide/is-sqlite-supported-in-vercel), [Prisma migration deployment](https://www.prisma.io/docs/orm/prisma-client/deployment/deploy-migrations-from-a-local-environment).
+
 # Deploy with Docker
 
 ## Requirements
@@ -22,7 +38,7 @@ Copy the example environment file and add your Resend API key:
 cp .env.example .env
 ```
 
-For local development, `DATABASE_URL` points to `prisma/dev.db`. Compose overrides it to use `/app/data/wishes.db` in a persistent named volume.
+Set `DATABASE_URL` to your hosted PostgreSQL connection URL. Compose loads them from `.env`.
 
 Edit `.env` and replace `your_resend_api_key` with your key. Keep this file private; it is excluded from the Docker build context and should not be committed.
 
@@ -66,14 +82,13 @@ docker-compose up --build -d
 
 ## Wish storage
 
-The app saves wishes in SQLite before attempting email notifications. Docker applies database migrations on startup and stores the database in the `wishes-data` volume, which survives rebuilds and `docker-compose down`. Removing that volume deletes the saved wishes.
+The app saves wishes in PostgreSQL before attempting email notifications. Docker applies database migrations on startup; the database is hosted separately.
 
 For development outside Docker, configure `.env`, then run:
 
 ```sh
 npm ci
 npx prisma generate
-touch prisma/dev.db
 npx prisma migrate deploy
 npm run dev
 ```
@@ -82,7 +97,7 @@ View saved wishes at `/wishes`. Submissions made before database saving was impl
 
 ## Prisma / OpenSSL container errors
 
-The Docker image uses Debian Bookworm with OpenSSL installed in every stage. Prisma generates its engine inside that image, and the build checks it with a SQLite query before packaging the app.
+The Docker image uses Debian Bookworm with OpenSSL installed in every stage. Prisma generates its engine inside that image.
 
 After updating from the Alpine image, rebuild without cached layers and recreate the container:
 
@@ -92,4 +107,4 @@ docker-compose up -d --force-recreate app
 docker-compose logs --tail=100 app
 ```
 
-The existing `wishes-data` volume is reused.
+Database contents stay in the configured hosted PostgreSQL database.
