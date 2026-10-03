@@ -3,5 +3,8 @@
 node_modules/
 .next/
 dist/
+public/images/
+.env*
+!.env.example
 .vscode/
 .idea/
