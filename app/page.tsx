@@ -1,25 +1,33 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import HomePageClient, { GalleryImage } from "@/components/HomePageClient";
 
-import React, { useState } from "react";
-import TemiIntroScreen from "@/components/TemiIntroScreen";
-import WishForm from "@/components/WishForm";
-import Navbar from "@/components/Navbar";
+export const dynamic = "force-dynamic";
 
-export default function Home() {
-  const [showIntro, setShowIntro] = useState<boolean>(true);
+export default async function Home() {
+  let dbImageWishes: GalleryImage[] = [];
 
-  return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 font-sans">
-      {showIntro ? (
-        <TemiIntroScreen onWriteWishClick={() => setShowIntro(false)} />
-      ) : (
-        <div className="animate-fade-in bg-slate-950 min-h-screen flex flex-col">
-          <Navbar />
-          <div className="py-8 px-4 flex-1">
-            <WishForm />
-          </div>
-        </div>
-      )}
-    </main>
-  );
+  try {
+    const wishesWithImages = await prisma.wish.findMany({
+      where: {
+        imageUrl: {
+          not: null,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    dbImageWishes = wishesWithImages
+      .filter((w) => w.imageUrl && w.imageUrl.trim() !== "")
+      .map((w) => ({
+        id: w.id,
+        name: w.name,
+        imageUrl: w.imageUrl as string,
+      }));
+  } catch (error) {
+    console.error("[HomePage DB fetch error]:", error);
+  }
+
+  return <HomePageClient dbImageWishes={dbImageWishes} />;
 }

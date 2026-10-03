@@ -16,6 +16,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
   const [message, setMessage] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
 
   // Success Modal & Temi's Message Modal States
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -26,10 +27,19 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
+      setIsImageUploading(true);
+
       const reader = new FileReader();
+
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
+        setIsImageUploading(false);
       };
+
+      reader.onerror = () => {
+        setIsImageUploading(false);
+      };
+
       reader.readAsDataURL(file);
     }
   };
@@ -37,7 +47,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
   // Form Submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !message.trim()) return;
+    if (!name.trim() || !message.trim() || isImageUploading) return;
 
     const wishData = {
       name: name.trim(),
@@ -67,6 +77,7 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
     setMessage("");
     setImageFile(null);
     setImagePreview(null);
+    setIsImageUploading(false);
     setIsSubmitted(false);
     setShowThankYouNote(false);
   };
@@ -138,14 +149,42 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
                 Add a Memory Photo with Temi <span className="text-slate-500 font-normal">(Optional)</span>
               </label>
               
-              <div className="relative border-2 border-dashed border-slate-700 hover:border-amber-400/60 rounded-xl p-4 text-center cursor-pointer transition-colors bg-slate-950/40">
+              <div className={`relative border-2 border-dashed rounded-xl p-4 text-center transition-colors bg-slate-950/40 ${
+                isImageUploading ? "border-amber-400/50 bg-amber-500/5" : "border-slate-700 hover:border-amber-400/60 cursor-pointer"
+              }`}>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  disabled={isImageUploading}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
                 />
-                {imagePreview ? (
+                {isImageUploading ? (
+                  <div className="py-3 flex flex-col items-center">
+                    <svg
+                      className="animate-spin h-7 w-7 text-amber-400 mb-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    <p className="text-sm font-medium text-amber-400">Processing image...</p>
+                    <p className="text-xs text-slate-500 mt-1">Converting photo for upload</p>
+                  </div>
+                ) : imagePreview ? (
                   <div className="flex items-center gap-4 text-left">
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-600 flex-shrink-0">
                       <Image src={imagePreview} alt="Memory Preview" fill className="object-cover" />
@@ -168,9 +207,25 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              disabled={isImageUploading}
+              className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-lg py-3.5 px-6 rounded-xl shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none flex items-center justify-center gap-2"
             >
-              Send Wish ❤️
+              {isImageUploading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  <span>Processing Image...</span>
+                </>
+              ) : (
+                <span>Send Wish ❤️</span>
+              )}
             </button>
           </form>
         </>
@@ -193,6 +248,13 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-3 pt-2">
+              <Link
+                href="/wishes"
+                className="w-full bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-slate-950 font-bold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer text-center block"
+              >
+                💌 Read other wishes
+              </Link>
+
               <button
                 onClick={() => setShowThankYouNote(true)}
                 className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-5 rounded-xl shadow-md transition-all transform hover:-translate-y-0.5 cursor-pointer"

@@ -8,3 +8,7 @@ public/images/
 !.env.example
 .vscode/
 .idea/
+.env
+.env*.local
+*.db
+*.db-journal
