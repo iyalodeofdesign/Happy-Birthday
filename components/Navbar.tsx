@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const pathname = usePathname();
 
-  const isHomeActive = pathname === "/";
+  const isHomeActive = pathname === "/write-a-wish";
   const isWishesActive = pathname.startsWith("/wishes");
 
   return (
@@ -22,10 +22,10 @@ export default function Navbar() {
           <span>Celebrating Temi</span>
         </Link>
 
-        {/* Center Navigation Menu */}
+        {/* Navigation Menu */}
         <nav className="flex items-center gap-6 sm:gap-8">
           <Link
-            href="/"
+            href="/write-a-wish"
             className={`py-1 text-sm font-bold transition-all relative ${
               isHomeActive
                 ? "text-white border-b-2 border-pink-500"
@@ -46,16 +46,6 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Direct Action Button */}
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-full shadow-md hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5"
-          >
-            <span>❤️</span>
-            <span>Wish Temi</span>
-          </Link>
-        </div>
       </div>
     </header>
   );

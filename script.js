@@ -11,58 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY_THEME = 'temi_theme_v1';
     const STORAGE_KEY_INTRO = 'temi_has_seen_intro';
 
-    // Heartfelt Initial Wishes Dedicated to Temi
-    const SAMPLE_WISHES = [
-        {
-            id: 'wish-1',
-            sender: 'Sarah M.',
-            message: 'Happy Birthday Temi! 🥳 Wishing you the most incredible year filled with laughter, big wins, and endless joy. So blessed to know you!',
-            date: 'Today',
-            loves: 5,
-            timestamp: Date.now() - 100000
-        },
-        {
-            id: 'wish-2',
-            sender: 'Uncle Dave & Family',
-            message: 'Temi, you bring so much warmth and light into every room you step into. Hope today is as special as you are! Happy Birthday!',
-            date: 'Today',
-            loves: 8,
-            timestamp: Date.now() - 200000
-        },
-        {
-            id: 'wish-3',
-            sender: 'Chidimma',
-            message: 'To my amazing friend Temi 🎉 Happy Birthday! Thank you for always being there with great advice and the best energy. Cheers to another year of greatness!',
-            date: 'Yesterday',
-            loves: 12,
-            timestamp: Date.now() - 300000
-        },
-        {
-            id: 'wish-4',
-            sender: 'Marcus (Tech Team)',
-            message: 'Happy Birthday Temi! Working alongside you is always a highlight. Wishing you massive success and happiness in all your upcoming projects!',
-            date: 'Yesterday',
-            loves: 4,
-            timestamp: Date.now() - 400000
-        },
-        {
-            id: 'wish-5',
-            sender: 'Aunty Grace',
-            message: 'Happy Birthday Temi ❤️ May this new chapter bring you peace, good health, and all the happiness your heart can hold!',
-            date: '2 days ago',
-            loves: 9,
-            timestamp: Date.now() - 500000
-        },
-        {
-            id: 'wish-6',
-            sender: 'Tobi & Sade',
-            message: 'Temi! Another trip around the sun! Hope you get spoiled today and eat plenty of cake 🎂 Keep shining bright!',
-            date: '2 days ago',
-            loves: 7,
-            timestamp: Date.now() - 600000
-        }
-    ];
-
     let wishes = [];
     let currentSlideIndex = 0;
     let isGridView = false;
@@ -155,10 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 wishes = JSON.parse(stored);
             } catch (e) {
-                wishes = [...SAMPLE_WISHES];
+                wishes = [];
             }
         } else {
-            wishes = [...SAMPLE_WISHES];
+            wishes = [];
             saveWishes();
         }
     }

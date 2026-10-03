@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 
@@ -9,15 +8,15 @@ export interface WishItem {
   id: string;
   name: string;
   message: string;
-  imageUrl?: string | null;
   createdAt?: string | Date;
 }
 
 interface WishesClientProps {
   wishes: WishItem[];
+  loadError?: boolean;
 }
 
-export default function WishesClient({ wishes }: WishesClientProps) {
+export default function WishesClient({ wishes, loadError }: WishesClientProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const isAnyHovered = hoveredId !== null;
@@ -30,7 +29,7 @@ export default function WishesClient({ wishes }: WishesClientProps) {
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="text-xs font-extrabold tracking-widest text-amber-400 uppercase block mb-2">
-            PUBLIC GUESTBOOK &amp; MEMORIES
+            BIRTHDAY WISHES
           </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
             Temi's Birthday Wishes ✨
@@ -40,7 +39,7 @@ export default function WishesClient({ wishes }: WishesClientProps) {
           </p>
           <div className="mt-6 flex justify-center">
             <Link
-              href="/"
+              href="/write-a-wish"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold text-sm px-6 py-3 rounded-full shadow-lg hover:shadow-rose-500/25 transition-all transform hover:-translate-y-0.5"
             >
               <span>❤️</span>
@@ -50,13 +49,17 @@ export default function WishesClient({ wishes }: WishesClientProps) {
         </div>
 
         {/* Wishes Masonry Grid */}
-        {wishes.length === 0 ? (
+        {loadError ? (
+          <div role="alert" className="text-center py-16 text-rose-300">
+            We couldn’t load the wishes. Please refresh the page and try again.
+          </div>
+        ) : wishes.length === 0 ? (
           <div className="text-center py-16 bg-slate-900/40 border border-slate-800 rounded-2xl max-w-md mx-auto">
             <span className="text-4xl mb-3 block">💌</span>
             <h3 className="text-lg font-bold text-slate-200">No wishes yet!</h3>
             <p className="text-sm text-slate-400 mt-1 mb-4">Be the very first person to write a wish for Temi.</p>
             <Link
-              href="/"
+              href="/write-a-wish"
               className="inline-block bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-all"
             >
               Write Wish
@@ -80,19 +83,6 @@ export default function WishesClient({ wishes }: WishesClientProps) {
                       : "bg-slate-900/60 border-slate-800/80 text-slate-300 opacity-90 hover:opacity-100"
                   }`}
                 >
-                  {/* Attached Image if present */}
-                  {wish.imageUrl && (
-                    <div className="relative w-full h-56 mb-4 rounded-xl overflow-hidden border border-slate-700/60 shadow-md">
-                      <Image
-                        src={wish.imageUrl}
-                        alt={`Photo shared by ${wish.name}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
-                  )}
-
                   {/* Message Content */}
                   <p className={`text-base leading-relaxed italic mb-4 transition-colors ${
                     isHovered ? "text-white font-medium" : "text-inherit"

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import TemiIntroScreen from "@/components/TemiIntroScreen";
 import WishForm from "@/components/WishForm";
@@ -14,27 +15,16 @@ export interface GalleryImage {
 
 interface HomePageClientProps {
   dbImageWishes: GalleryImage[];
+  showIntroScreen?: boolean;
 }
 
-const DEFAULT_GALLERY: GalleryImage[] = [
-  { id: "def-1", name: "Sarah & Friends", imageUrl: "/images/11042739-69FF-4947-A5B2-6C70FC82D2F8_1_105_c.jpeg" },
-  { id: "def-2", name: "David M.", imageUrl: "/images/2607889E-EC46-4733-8DC9-AA96E3F67094_1_105_c.jpeg" },
-  { id: "def-3", name: "Jessica K.", imageUrl: "/images/42DCFB78-FE64-4617-993C-F853BD135B6B_1_105_c.jpeg" },
-  { id: "def-4", name: "Alex P.", imageUrl: "/images/53138422-E9C8-4C8D-89D6-ED45B26769D6_1_105_c.jpeg" },
-  { id: "def-5", name: "Uncle John", imageUrl: "/images/80FA9039-13D5-4E5E-BDBE-85D4D41C9A49_1_105_c.jpeg" },
-  { id: "def-6", name: "Grace T.", imageUrl: "/images/A59B210F-EF6D-4FC6-8FE8-049ED450C022_1_105_c.jpeg" },
-];
-
-export default function HomePageClient({ dbImageWishes }: HomePageClientProps) {
-  const [showIntro, setShowIntro] = useState<boolean>(true);
-
-  // Combine database images (where imageUrl != null) with fallback gallery
-  const allImages = [...dbImageWishes, ...DEFAULT_GALLERY];
+export default function HomePageClient({ dbImageWishes, showIntroScreen = true }: HomePageClientProps) {
+  const router = useRouter();
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 font-sans">
-      {showIntro ? (
-        <TemiIntroScreen onWriteWishClick={() => setShowIntro(false)} />
+      {showIntroScreen ? (
+        <TemiIntroScreen onWriteWishClick={() => router.push("/write-a-wish")} />
       ) : (
         <div className="animate-fade-in bg-slate-950 min-h-screen flex flex-col">
           <Navbar />
@@ -57,7 +47,7 @@ export default function HomePageClient({ dbImageWishes }: HomePageClientProps) {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                {allImages.map((img) => (
+                {dbImageWishes.map((img) => (
                   <div
                     key={img.id}
                     className="group relative h-72 rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/60 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-500/10"
