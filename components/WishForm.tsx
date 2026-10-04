@@ -296,21 +296,17 @@ export default function WishForm({ onWishSubmitted, onNavigateToCarousel }: Wish
             </h3>
 
             <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-5 text-slate-200 text-sm leading-relaxed text-left whitespace-pre-line max-h-[60vh] overflow-y-auto">
-{`Hello You,
-Thank you for the birthday wishes. I hope you didn't start listing every old matter since we met. 
-Every year I report how much I made at the end of the year, from January to October, i have made  roughly 30 million... in stress. 😂 
+{`Thank you for your birthday wish. I'm truly grateful to have you in my life. I know I can be difficult, annoying and impatient, and even with all those "buts," you still ride with me. Thank you for a great 365 days.
+The Bible says, "A friend loveth at all times" (Proverbs 17:17). You have shown me exactly what that looks like.  Every time I think, I'll think of you. 
 
-But seriously, I'm glad to have y'all, I'm blessed that you think I'm worth celebrating.
-Since my last birthday: some learning, a lot of tears and plenty of frustration. I stopped applying on Upwork because school wan kill me, and I'm no longer debt-free. I dey owe for this UK guyyyy. UK, wan make me sell my inheritance.
-My parents are good (my mama wan kill me with calls). My siblings are good too, and we still do amebo about our parents. 
-I've been feeling lonely lately, which isn't like me, but I think it's because i miss my goats. Also, I cut my coat more than my size this year. Sorry o, you know I always forget things.
+My advice for you is to keep holding on. Life will get better. "Weeping may endure for a night, but joy cometh in the morning" (Psalm 30:5). Some nights feel long, but morning always comes.
+Take breaks when you need them. Rest is not quitting. And keep working hard, even when it feels like it isn't paying off. Your harvest is coming, so just keep trying.
 
-Moving forward, I have decided to act my age and Relocate my whole family, goats inclusive. The goats have been told. They're excited.
-Thank you again
+There's a saying I love: "Fall seven times, stand up eight." So if you fall, get back up. And when you feel like you can't do it alone, remember "Fear thou not; for I am with thee" (Isaiah 41:10). You are never really alone.
 
-Here's to 28, 29 and 30. Happy birthday to me, Opeyemi Adeniji Adebola 🎉
-
-P.S. I love my boyfriend, Micah 🙈❤️ Y'all can stop begging me to date you.`}
+So, i pray for you: 
+Lord, I thank You for this person. Thank You for their kindness, their patience with me, and the way they show up even when I am hard to love. Wherever they are today, be their strength when they are tired, their peace when they are anxious, and their hope when the road feels long. Give them rest that restores them, joy that surprises them, and open doors that no one can shut. Let every seed they have sown in tears be reaped in joy. Keep them safe, keep them whole, and let them feel how deeply they are loved.
+In Jesus' name, Amen. 🙏🏾`}
             </div>
 
             <div className="flex flex-col gap-3 flex-shrink-0">
